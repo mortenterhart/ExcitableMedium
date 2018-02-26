@@ -1,7 +1,5 @@
 package state;
 
-import state.IState;
-
 public class Quiescent implements IState {
     private int id = 0;
 

@@ -6,9 +6,12 @@ import java.util.ArrayList;
 public class Cell {
     ArrayList<Cell> CellNeighbours;
     IState state;
+    CellCoordinates coordinates;
+    ArrayList<Cell> neighbours;
 
-    public Cell(IState state){
+    public Cell(IState state/*, CellCoordinates coordinates*/){
         this.state = state;
+        //this.coordinates = coordinates;
     }
 
     public int getCellState(){

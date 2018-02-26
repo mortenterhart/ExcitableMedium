@@ -8,6 +8,7 @@ import java.util.Random;
 public class Grid {
     private Cell[][] grid;
     private int gridSize = Configuration.instance.gridSize;
+    private double fireProbability = Configuration.instance.fireProbibility;
     private Random random;
 
     Grid() {
@@ -18,7 +19,7 @@ public class Grid {
         Cell[][] cells = new Cell[gridSize][gridSize];
         for (int i = 0; i < gridSize ; i++) {
             for (int j = 0; j < gridSize ; j++) {
-                if(Math.random() > 0.9){  //TODO Change to the beloved Mersenee Twister
+                if(Math.random() < fireProbability){  //TODO Change to the beloved Mersenee Twister
                 cells[i][j] = new Cell(new Excited());
                 }else {
                 cells[i][j] = new Cell(new Quiescent());
