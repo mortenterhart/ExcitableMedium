@@ -38,4 +38,8 @@ public class Grid {
         }
     }
 
+    public void calculateNeighbourCells(){
+
+    }
+
 }
