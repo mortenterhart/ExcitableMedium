@@ -28,4 +28,8 @@ public class Cell {
     public void setState(IState state) {
         this.state = state;
     }
+
+    public void updateCell(){
+        state.change(this);
+    }
 }

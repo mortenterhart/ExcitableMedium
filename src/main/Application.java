@@ -13,5 +13,13 @@ public class Application {
 
         //off cores such things can be added after the basic functionality is added. But at first we want a running Application in sense of
         //the agile principle: Working software is the primary measure of progress.
+
+        while (true){
+            grid.updateCellStates();
+            grid.print();
+            System.out.println();
+            System.out.println();
+            grid.updateTime();
+        }
     }
 }

@@ -26,7 +26,6 @@ public class Grid {
                 }else {
                 cells[i][j] = new Cell(new Quiescent());
                 }
-
             }
         }
         return cells;
@@ -43,6 +42,19 @@ public class Grid {
 
     public void calculateNeighbourCells(){
 
+    }
+
+    public void updateTime(){
+        time++;
+    }
+
+    public void updateCellStates(){
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                grid[i][j].updateCell();
+            }
+            System.out.println();
+        }
     }
 
 }
