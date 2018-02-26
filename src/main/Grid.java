@@ -9,9 +9,11 @@ public class Grid {
     private Cell[][] grid;
     private int gridSize = Configuration.instance.gridSize;
     private double fireProbability = Configuration.instance.fireProbibility;
+    private int time;  //can later be changed to double
     private Random random;
 
     Grid() {
+        this.time = 0;
         this.grid = gridBuilder();
     }
 

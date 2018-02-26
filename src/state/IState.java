@@ -1,7 +1,8 @@
 package state;
 
+import main.Cell;
+
 public interface IState {
-    void setSate();
-    void change();
+    void change(Cell cell);
     int getID();
 }

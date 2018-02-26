@@ -1,4 +1,5 @@
 package main;
+import state.Excited;
 import state.IState;
 
 import java.util.ArrayList;
@@ -18,10 +19,13 @@ public class Cell {
         return state.getID();
     }
 
-    public void findeNeighbour(){
+    public ArrayList<Cell> getNeighbours(){
         // die Frage ist wollen wir die Nachbarn als instanzen in der Liste Speicher oder doch nur die Koordinaten der Nachbarn?
-
+        return  neighbours;
     }
 
 
+    public void setState(IState state) {
+        this.state = state;
+    }
 }
