@@ -1,27 +1,28 @@
 package main;
-import state.Excited;
+
 import state.IState;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Cell {
-    ArrayList<Cell> CellNeighbours;
-    IState state;
-    CellCoordinates coordinates;
-    ArrayList<Cell> neighbours;
+    private List<Cell> CellNeighbours;
+    private IState state;
+    private CellCoordinates coordinates;
+    private List<Cell> neighbours;
 
-    public Cell(IState state/*, CellCoordinates coordinates*/){
+    public Cell(IState state /*, CellCoordinates coordinates*/) {
         this.state = state;
         //this.coordinates = coordinates;
     }
 
-    public int getCellState(){
+    public int getCellState() {
         return state.getID();
     }
 
-    public ArrayList<Cell> getNeighbours(){
-        // die Frage ist wollen wir die Nachbarn als instanzen in der Liste Speicher oder doch nur die Koordinaten der Nachbarn?
-        return  neighbours;
+    public List<Cell> getNeighbours() {
+        // die Frage ist, wollen wir die Nachbarn als Instanzen in der Liste speichern oder doch nur die Koordinaten der Nachbarn?
+        return neighbours;
     }
 
 
@@ -29,7 +30,7 @@ public class Cell {
         this.state = state;
     }
 
-    public void updateCell(){
+    public void updateCell() {
         state.change(this);
     }
 }
