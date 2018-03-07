@@ -16,4 +16,9 @@ public class Excited implements IState {
     public int getID(){
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "E";
+    }
 }

@@ -1,8 +1,8 @@
 package main;
 
-public class Application {
+public class Application {//extends javafx.application.Application {
 
-    public static void main(String [] args){
+    public static void main(String[] args) {
         Grid grid = new Grid();
         System.out.println(grid);
         grid.print();
@@ -22,4 +22,9 @@ public class Application {
             grid.updateTime();
         }
     }
+
+    /*@Override
+    public void start(Stage primaryStage) {
+
+    }*/
 }
