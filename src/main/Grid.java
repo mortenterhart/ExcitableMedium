@@ -37,7 +37,7 @@ public class Grid {
     public void print() {
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-                System.out.print(grid[i][j].getCellState());
+                System.out.print(grid[i][j].getCellState() + " ");
             }
             System.out.println();
         }
