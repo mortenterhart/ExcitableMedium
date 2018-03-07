@@ -2,15 +2,18 @@ package main;
 
 import state.Excited;
 import state.Quiescent;
+import util.MersenneTwister;
 
 import java.util.Random;
 
 public class Grid {
     private Cell[][] grid;
+    private int time;  //can later be changed to double
+
+
     private int gridSize = Configuration.instance.gridSize;
     private double fireProbability = Configuration.instance.fireProbibility;
-    private int time;  //can later be changed to double
-    private Random random;
+    private MersenneTwister random = Configuration.instance.random;
 
     Grid() {
         this.time = 0;
@@ -19,12 +22,12 @@ public class Grid {
 
     private Cell[][] gridBuilder() {
         Cell[][] cells = new Cell[gridSize][gridSize];
-        for (int i = 0; i < gridSize ; i++) {
-            for (int j = 0; j < gridSize ; j++) {
-                if(Math.random() < fireProbability){  //TODO Change to the beloved Mersenee Twister
-                cells[i][j] = new Cell(new Excited());
-                }else {
-                cells[i][j] = new Cell(new Quiescent());
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                if (random.nextBoolean(fireProbability)) {
+                    cells[i][j] = new Cell(new Excited());
+                } else {
+                    cells[i][j] = new Cell(new Quiescent());
                 }
             }
         }
@@ -40,15 +43,15 @@ public class Grid {
         }
     }
 
-    public void calculateNeighbourCells(){
+    public void calculateNeighbourCells() {
 
     }
 
-    public void updateTime(){
+    public void updateTime() {
         time++;
     }
 
-    public void updateCellStates(){
+    public void updateCellStates() {
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 grid[i][j].updateCell();

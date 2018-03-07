@@ -6,7 +6,6 @@ public class Quiescent implements IState {
     private int id = 0;
 
 
-
     @Override
     public void change(Cell cell) {
         //neighbor in fire -> cell in fire

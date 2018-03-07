@@ -46,10 +46,10 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
         mag01[0] = 0x0;
         mag01[1] = MATRIX_A;
 
-        mt[0]= (int)(seed & 0xffffffff);
+        mt[0] = (int) (seed & 0xffffffff);
 
         for (mti = 1; mti < N; mti++) {
-            mt[mti] = (1812433253 * (mt[mti-1] ^ (mt[mti-1] >>> 30)) + mti);
+            mt[mti] = (1812433253 * (mt[mti - 1] ^ (mt[mti - 1] >>> 30)) + mti);
         }
     }
 
@@ -61,27 +61,31 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
 
         setSeed(19650218);
 
-        i=1;
-        j=0;
+        i = 1;
+        j = 0;
 
-        k = ( N > array.length ? N : array.length);
+        k = (N > array.length ? N : array.length);
 
-        for (; k !=0; k--) {
-            mt[i] = (mt[i] ^ ((mt[i-1] ^ (mt[i-1] >>> 30)) * 1664525)) + array[j] + j;
+        for (; k != 0; k--) {
+            mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >>> 30)) * 1664525)) + array[j] + j;
             // mt[i] &= 0xffffffff; /* for WORDSIZE > 32 machines */
             i++;
             j++;
-            if (i>=N) { mt[0] = mt[N-1]; i=1; }
-            if (j>=array.length) j=0;
+            if (i >= N) {
+                mt[0] = mt[N - 1];
+                i = 1;
+            }
+            if (j >= array.length) j = 0;
         }
 
-        for (k = N-1; k != 0; k--) {
-            mt[i] = (mt[i] ^ ((mt[i-1] ^ (mt[i-1] >>> 30)) * 1566083941)) - i;
+        for (k = N - 1; k != 0; k--) {
+            mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >>> 30)) * 1566083941)) - i;
             // mt[i] &= 0xffffffff; /* for WORDSIZE > 32 machines */
             i++;
 
             if (i >= N) {
-                mt[0] = mt[N-1]; i=1;
+                mt[0] = mt[N - 1];
+                i = 1;
             }
         }
 
@@ -98,17 +102,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             final int[] mag01 = this.mag01;
 
             for (kk = 0; kk < N - M; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+M] ^ (y >>> 1) ^ mag01[y & 0x1];
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            for (; kk < N-1; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+(M-N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+            for (; kk < N - 1; kk++) {
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            y = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-            mt[N-1] = mt[M-1] ^ (y >>> 1) ^ mag01[y & 0x1];
+            y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+            mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
 
             mti = 0;
         }
@@ -132,17 +136,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             final int[] mag01 = this.mag01;
 
             for (kk = 0; kk < N - M; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+M] ^ (y >>> 1) ^ mag01[y & 0x1];
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            for (; kk < N-1; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+(M-N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+            for (; kk < N - 1; kk++) {
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            y = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-            mt[N-1] = mt[M-1] ^ (y >>> 1) ^ mag01[y & 0x1];
+            y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+            mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
 
             mti = 0;
         }
@@ -153,7 +157,7 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
         y ^= (y << 15) & TEMPERING_MASK_C;      // TEMPERING_SHIFT_T(y)
         y ^= (y >>> 18);                        // TEMPERING_SHIFT_L(y)
 
-        return (short)(y >>> 16);
+        return (short) (y >>> 16);
     }
 
     public char nextChar() {
@@ -165,17 +169,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             final int[] mag01 = this.mag01;
 
             for (kk = 0; kk < N - M; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+M] ^ (y >>> 1) ^ mag01[y & 0x1];
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            for (; kk < N-1; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+(M-N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+            for (; kk < N - 1; kk++) {
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            y = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-            mt[N-1] = mt[M-1] ^ (y >>> 1) ^ mag01[y & 0x1];
+            y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+            mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
 
             mti = 0;
         }
@@ -186,7 +190,7 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
         y ^= (y << 15) & TEMPERING_MASK_C;      // TEMPERING_SHIFT_T(y)
         y ^= (y >>> 18);                        // TEMPERING_SHIFT_L(y)
 
-        return (char)(y >>> 16);
+        return (char) (y >>> 16);
     }
 
     public boolean nextBoolean() {
@@ -198,17 +202,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             final int[] mag01 = this.mag01;
 
             for (kk = 0; kk < N - M; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+M] ^ (y >>> 1) ^ mag01[y & 0x1];
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            for (; kk < N-1; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+(M-N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+            for (; kk < N - 1; kk++) {
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            y = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-            mt[N-1] = mt[M-1] ^ (y >>> 1) ^ mag01[y & 0x1];
+            y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+            mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
 
             mti = 0;
         }
@@ -226,11 +230,11 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
         int y;
 
         if (probability < 0.0f || probability > 1.0f)
-            throw new IllegalArgumentException ("probability must be between 0.0 and 1.0 inclusive.");
+            throw new IllegalArgumentException("probability must be between 0.0 and 1.0 inclusive.");
 
-        if (probability==0.0f)
+        if (probability == 0.0f)
             return false;
-        else if (probability==1.0f)
+        else if (probability == 1.0f)
             return true;
 
         if (mti >= N) {
@@ -239,17 +243,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             final int[] mag01 = this.mag01;
 
             for (kk = 0; kk < N - M; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+M] ^ (y >>> 1) ^ mag01[y & 0x1];
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            for (; kk < N-1; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+(M-N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+            for (; kk < N - 1; kk++) {
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            y = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-            mt[N-1] = mt[M-1] ^ (y >>> 1) ^ mag01[y & 0x1];
+            y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+            mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
 
             mti = 0;
         }
@@ -260,7 +264,7 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
         y ^= (y << 15) & TEMPERING_MASK_C;      // TEMPERING_SHIFT_T(y)
         y ^= (y >>> 18);                        // TEMPERING_SHIFT_L(y)
 
-        return (y >>> 8) / ((float)(1 << 24)) < probability;
+        return (y >>> 8) / ((float) (1 << 24)) < probability;
     }
 
     public boolean nextBoolean(double probability) {
@@ -268,11 +272,11 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
         int z;
 
         if (probability < 0.0 || probability > 1.0)
-            throw new IllegalArgumentException ("probability must be between 0.0 and 1.0 inclusive.");
+            throw new IllegalArgumentException("probability must be between 0.0 and 1.0 inclusive.");
 
-        if (probability==0.0)
+        if (probability == 0.0)
             return false;
-        else if (probability==1.0)
+        else if (probability == 1.0)
             return true;
 
         if (mti >= N) {
@@ -281,17 +285,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             final int[] mag01 = this.mag01;
 
             for (kk = 0; kk < N - M; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+M] ^ (y >>> 1) ^ mag01[y & 0x1];
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            for (; kk < N-1; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+(M-N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+            for (; kk < N - 1; kk++) {
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            y = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-            mt[N-1] = mt[M-1] ^ (y >>> 1) ^ mag01[y & 0x1];
+            y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+            mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
 
             mti = 0;
         }
@@ -308,17 +312,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             final int[] mag01 = this.mag01;
 
             for (kk = 0; kk < N - M; kk++) {
-                z = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+M] ^ (z >>> 1) ^ mag01[z & 0x1];
+                z = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + M] ^ (z >>> 1) ^ mag01[z & 0x1];
             }
 
-            for (; kk < N-1; kk++) {
-                z = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+(M-N)] ^ (z >>> 1) ^ mag01[z & 0x1];
+            for (; kk < N - 1; kk++) {
+                z = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + (M - N)] ^ (z >>> 1) ^ mag01[z & 0x1];
             }
 
-            z = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-            mt[N-1] = mt[M-1] ^ (z >>> 1) ^ mag01[z & 0x1];
+            z = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+            mt[N - 1] = mt[M - 1] ^ (z >>> 1) ^ mag01[z & 0x1];
 
             mti = 0;
         }
@@ -329,7 +333,7 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
         z ^= (z << 15) & TEMPERING_MASK_C;      // TEMPERING_SHIFT_T(z)
         z ^= (z >>> 18);                        // TEMPERING_SHIFT_L(z)
 
-        return ((((long)(y >>> 6)) << 27) + (z >>> 5)) / (double)(1L << 53) < probability;
+        return ((((long) (y >>> 6)) << 27) + (z >>> 5)) / (double) (1L << 53) < probability;
     }
 
     public byte nextByte() {
@@ -341,17 +345,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             final int[] mag01 = this.mag01;
 
             for (kk = 0; kk < N - M; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+M] ^ (y >>> 1) ^ mag01[y & 0x1];
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            for (; kk < N-1; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+(M-N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+            for (; kk < N - 1; kk++) {
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            y = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-            mt[N-1] = mt[M-1] ^ (y >>> 1) ^ mag01[y & 0x1];
+            y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+            mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
 
             mti = 0;
         }
@@ -362,30 +366,30 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
         y ^= (y << 15) & TEMPERING_MASK_C;      // TEMPERING_SHIFT_T(y)
         y ^= (y >>> 18);                        // TEMPERING_SHIFT_L(y)
 
-        return (byte)(y >>> 24);
+        return (byte) (y >>> 24);
     }
 
     public void nextBytes(byte[] bytes) {
         int y;
 
-        for (int x=0;x<bytes.length;x++) {
+        for (int x = 0; x < bytes.length; x++) {
             if (mti >= N) {
                 int kk;
                 final int[] mt = this.mt;
                 final int[] mag01 = this.mag01;
 
                 for (kk = 0; kk < N - M; kk++) {
-                    y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                    mt[kk] = mt[kk+M] ^ (y >>> 1) ^ mag01[y & 0x1];
+                    y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                    mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
                 }
 
-                for (; kk < N-1; kk++) {
-                    y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                    mt[kk] = mt[kk+(M-N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+                for (; kk < N - 1; kk++) {
+                    y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                    mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
                 }
 
-                y = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-                mt[N-1] = mt[M-1] ^ (y >>> 1) ^ mag01[y & 0x1];
+                y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+                mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
 
                 mti = 0;
             }
@@ -396,7 +400,7 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             y ^= (y << 15) & TEMPERING_MASK_C;      // TEMPERING_SHIFT_T(y)
             y ^= (y >>> 18);                        // TEMPERING_SHIFT_L(y)
 
-            bytes[x] = (byte)(y >>> 24);
+            bytes[x] = (byte) (y >>> 24);
         }
     }
 
@@ -410,17 +414,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             final int[] mag01 = this.mag01;
 
             for (kk = 0; kk < N - M; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+M] ^ (y >>> 1) ^ mag01[y & 0x1];
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            for (; kk < N-1; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+(M-N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+            for (; kk < N - 1; kk++) {
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            y = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-            mt[N-1] = mt[M-1] ^ (y >>> 1) ^ mag01[y & 0x1];
+            y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+            mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
 
             mti = 0;
         }
@@ -437,17 +441,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             final int[] mag01 = this.mag01;
 
             for (kk = 0; kk < N - M; kk++) {
-                z = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+M] ^ (z >>> 1) ^ mag01[z & 0x1];
+                z = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + M] ^ (z >>> 1) ^ mag01[z & 0x1];
             }
 
-            for (; kk < N-1; kk++) {
-                z = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+(M-N)] ^ (z >>> 1) ^ mag01[z & 0x1];
+            for (; kk < N - 1; kk++) {
+                z = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + (M - N)] ^ (z >>> 1) ^ mag01[z & 0x1];
             }
 
-            z = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-            mt[N-1] = mt[M-1] ^ (z >>> 1) ^ mag01[z & 0x1];
+            z = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+            mt[N - 1] = mt[M - 1] ^ (z >>> 1) ^ mag01[z & 0x1];
 
             mti = 0;
         }
@@ -458,7 +462,7 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
         z ^= (z << 15) & TEMPERING_MASK_C;      // TEMPERING_SHIFT_T(z)
         z ^= (z >>> 18);                        // TEMPERING_SHIFT_L(z)
 
-        return (((long)y) << 32) + (long)z;
+        return (((long) y) << 32) + (long) z;
     }
 
     public long nextLong(long n) {
@@ -477,17 +481,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
                 final int[] mag01 = this.mag01;
 
                 for (kk = 0; kk < N - M; kk++) {
-                    y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                    mt[kk] = mt[kk+M] ^ (y >>> 1) ^ mag01[y & 0x1];
+                    y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                    mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
                 }
 
-                for (; kk < N-1; kk++) {
-                    y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                    mt[kk] = mt[kk+(M-N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+                for (; kk < N - 1; kk++) {
+                    y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                    mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
                 }
 
-                y = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-                mt[N-1] = mt[M-1] ^ (y >>> 1) ^ mag01[y & 0x1];
+                y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+                mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
 
                 mti = 0;
             }
@@ -504,17 +508,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
                 final int[] mag01 = this.mag01;
 
                 for (kk = 0; kk < N - M; kk++) {
-                    z = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                    mt[kk] = mt[kk+M] ^ (z >>> 1) ^ mag01[z & 0x1];
+                    z = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                    mt[kk] = mt[kk + M] ^ (z >>> 1) ^ mag01[z & 0x1];
                 }
 
-                for (; kk < N-1; kk++) {
-                    z = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                    mt[kk] = mt[kk+(M-N)] ^ (z >>> 1) ^ mag01[z & 0x1];
+                for (; kk < N - 1; kk++) {
+                    z = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                    mt[kk] = mt[kk + (M - N)] ^ (z >>> 1) ^ mag01[z & 0x1];
                 }
 
-                z = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-                mt[N-1] = mt[M-1] ^ (z >>> 1) ^ mag01[z & 0x1];
+                z = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+                mt[N - 1] = mt[M - 1] ^ (z >>> 1) ^ mag01[z & 0x1];
 
                 mti = 0;
             }
@@ -525,9 +529,9 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             z ^= (z << 15) & TEMPERING_MASK_C;      // TEMPERING_SHIFT_T(z)
             z ^= (z >>> 18);                        // TEMPERING_SHIFT_L(z)
 
-            bits = (((((long)y) << 32) + (long)z) >>> 1);
+            bits = (((((long) y) << 32) + (long) z) >>> 1);
             val = bits % n;
-        } while (bits - val + (n-1) < 0);
+        } while (bits - val + (n - 1) < 0);
 
         return val;
     }
@@ -542,17 +546,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             final int[] mag01 = this.mag01;
 
             for (kk = 0; kk < N - M; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+M] ^ (y >>> 1) ^ mag01[y & 0x1];
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            for (; kk < N-1; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+(M-N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+            for (; kk < N - 1; kk++) {
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            y = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-            mt[N-1] = mt[M-1] ^ (y >>> 1) ^ mag01[y & 0x1];
+            y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+            mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
 
             mti = 0;
         }
@@ -569,17 +573,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             final int[] mag01 = this.mag01;
 
             for (kk = 0; kk < N - M; kk++) {
-                z = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+M] ^ (z >>> 1) ^ mag01[z & 0x1];
+                z = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + M] ^ (z >>> 1) ^ mag01[z & 0x1];
             }
 
-            for (; kk < N-1; kk++) {
-                z = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+(M-N)] ^ (z >>> 1) ^ mag01[z & 0x1];
+            for (; kk < N - 1; kk++) {
+                z = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + (M - N)] ^ (z >>> 1) ^ mag01[z & 0x1];
             }
 
-            z = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-            mt[N-1] = mt[M-1] ^ (z >>> 1) ^ mag01[z & 0x1];
+            z = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+            mt[N - 1] = mt[M - 1] ^ (z >>> 1) ^ mag01[z & 0x1];
 
             mti = 0;
         }
@@ -590,7 +594,7 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
         z ^= (z << 15) & TEMPERING_MASK_C;      // TEMPERING_SHIFT_T(z)
         z ^= (z >>> 18);                        // TEMPERING_SHIFT_L(z)
 
-        return ((((long)(y >>> 6)) << 27) + (z >>> 5)) / (double)(1L << 53);
+        return ((((long) (y >>> 6)) << 27) + (z >>> 5)) / (double) (1L << 53);
     }
 
     public double nextDouble(boolean includeZero, boolean includeOne) {
@@ -605,7 +609,7 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
     }
 
     public boolean stateEquals(Object o) {
-        if (o==this) return true;
+        if (o == this) return true;
 
         if (o == null || !(o instanceof MersenneTwister))
             return false;
@@ -619,7 +623,7 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             if (mag01[x] != other.mag01[x])
                 return false;
 
-        for (int x = 0; x <mt.length; x++)
+        for (int x = 0; x < mt.length; x++)
             if (mt[x] != other.mt[x]) return false;
 
         return true;
@@ -643,17 +647,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
                     final int[] mag01 = this.mag01;
 
                     for (kk = 0; kk < N - M; kk++) {
-                        y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                        mt[kk] = mt[kk+M] ^ (y >>> 1) ^ mag01[y & 0x1];
+                        y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                        mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
                     }
 
-                    for (; kk < N-1; kk++) {
-                        y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                        mt[kk] = mt[kk+(M-N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+                    for (; kk < N - 1; kk++) {
+                        y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                        mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
                     }
 
-                    y = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-                    mt[N-1] = mt[M-1] ^ (y >>> 1) ^ mag01[y & 0x1];
+                    y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+                    mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
 
                     mti = 0;
                 }
@@ -670,17 +674,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
                     final int[] mag01 = this.mag01;
 
                     for (kk = 0; kk < N - M; kk++) {
-                        z = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                        mt[kk] = mt[kk+M] ^ (z >>> 1) ^ mag01[z & 0x1];
+                        z = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                        mt[kk] = mt[kk + M] ^ (z >>> 1) ^ mag01[z & 0x1];
                     }
 
-                    for (; kk < N-1; kk++) {
-                        z = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                        mt[kk] = mt[kk+(M-N)] ^ (z >>> 1) ^ mag01[z & 0x1];
+                    for (; kk < N - 1; kk++) {
+                        z = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                        mt[kk] = mt[kk + (M - N)] ^ (z >>> 1) ^ mag01[z & 0x1];
                     }
 
-                    z = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-                    mt[N-1] = mt[M-1] ^ (z >>> 1) ^ mag01[z & 0x1];
+                    z = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+                    mt[N - 1] = mt[M - 1] ^ (z >>> 1) ^ mag01[z & 0x1];
 
                     mti = 0;
                 }
@@ -697,17 +701,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
                     final int[] mag01 = this.mag01;
 
                     for (kk = 0; kk < N - M; kk++) {
-                        a = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                        mt[kk] = mt[kk+M] ^ (a >>> 1) ^ mag01[a & 0x1];
+                        a = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                        mt[kk] = mt[kk + M] ^ (a >>> 1) ^ mag01[a & 0x1];
                     }
 
-                    for (; kk < N-1; kk++) {
-                        a = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                        mt[kk] = mt[kk+(M-N)] ^ (a >>> 1) ^ mag01[a & 0x1];
+                    for (; kk < N - 1; kk++) {
+                        a = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                        mt[kk] = mt[kk + (M - N)] ^ (a >>> 1) ^ mag01[a & 0x1];
                     }
 
-                    a = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-                    mt[N-1] = mt[M-1] ^ (a >>> 1) ^ mag01[a & 0x1];
+                    a = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+                    mt[N - 1] = mt[M - 1] ^ (a >>> 1) ^ mag01[a & 0x1];
 
                     mti = 0;
                 }
@@ -724,17 +728,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
                     final int[] mag01 = this.mag01;
 
                     for (kk = 0; kk < N - M; kk++) {
-                        b = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                        mt[kk] = mt[kk+M] ^ (b >>> 1) ^ mag01[b & 0x1];
+                        b = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                        mt[kk] = mt[kk + M] ^ (b >>> 1) ^ mag01[b & 0x1];
                     }
 
-                    for (; kk < N-1; kk++) {
-                        b = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                        mt[kk] = mt[kk+(M-N)] ^ (b >>> 1) ^ mag01[b & 0x1];
+                    for (; kk < N - 1; kk++) {
+                        b = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                        mt[kk] = mt[kk + (M - N)] ^ (b >>> 1) ^ mag01[b & 0x1];
                     }
 
-                    b = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-                    mt[N-1] = mt[M-1] ^ (b >>> 1) ^ mag01[b & 0x1];
+                    b = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+                    mt[N - 1] = mt[M - 1] ^ (b >>> 1) ^ mag01[b & 0x1];
 
                     mti = 0;
                 }
@@ -746,16 +750,16 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
                 b ^= (b >>> 18);                        // TEMPERING_SHIFT_L(b)
 
                 v1 = 2 *
-                        (((((long)(y >>> 6)) << 27) + (z >>> 5)) / (double)(1L << 53))
+                        (((((long) (y >>> 6)) << 27) + (z >>> 5)) / (double) (1L << 53))
                         - 1;
 
-                v2 = 2 * (((((long)(a >>> 6)) << 27) + (b >>> 5)) / (double)(1L << 53))
+                v2 = 2 * (((((long) (a >>> 6)) << 27) + (b >>> 5)) / (double) (1L << 53))
                         - 1;
 
                 s = v1 * v1 + v2 * v2;
-            } while (s >= 1 || s==0);
+            } while (s >= 1 || s == 0);
 
-            double multiplier = StrictMath.sqrt(-2 * StrictMath.log(s)/s);
+            double multiplier = StrictMath.sqrt(-2 * StrictMath.log(s) / s);
 
             nextNextGaussian = v2 * multiplier;
             haveNextNextGaussian = true;
@@ -773,17 +777,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             final int[] mag01 = this.mag01;
 
             for (kk = 0; kk < N - M; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+M] ^ (y >>> 1) ^ mag01[y & 0x1];
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            for (; kk < N-1; kk++) {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                mt[kk] = mt[kk+(M-N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+            for (; kk < N - 1; kk++) {
+                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
             }
 
-            y = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-            mt[N-1] = mt[M-1] ^ (y >>> 1) ^ mag01[y & 0x1];
+            y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+            mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
 
             mti = 0;
         }
@@ -794,7 +798,7 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
         y ^= (y << 15) & TEMPERING_MASK_C;      // TEMPERING_SHIFT_T(y)
         y ^= (y >>> 18);                        // TEMPERING_SHIFT_L(y)
 
-        return (y >>> 8) / ((float)(1 << 24));
+        return (y >>> 8) / ((float) (1 << 24));
     }
 
     public float nextFloat(boolean includeZero, boolean includeOne) {
@@ -823,17 +827,17 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
                 final int[] mag01 = this.mag01;
 
                 for (kk = 0; kk < N - M; kk++) {
-                    y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                    mt[kk] = mt[kk+M] ^ (y >>> 1) ^ mag01[y & 0x1];
+                    y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                    mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
                 }
 
-                for (; kk < N-1; kk++) {
-                    y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                    mt[kk] = mt[kk+(M-N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+                for (; kk < N - 1; kk++) {
+                    y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                    mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
                 }
 
-                y = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-                mt[N-1] = mt[M-1] ^ (y >>> 1) ^ mag01[y & 0x1];
+                y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+                mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
 
                 mti = 0;
             }
@@ -844,7 +848,7 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
             y ^= (y << 15) & TEMPERING_MASK_C;      // TEMPERING_SHIFT_T(y)
             y ^= (y >>> 18);                        // TEMPERING_SHIFT_L(y)
 
-            return (int)((n * (long) (y >>> 1) ) >> 31);
+            return (int) ((n * (long) (y >>> 1)) >> 31);
         }
 
         int bits, val;
@@ -852,24 +856,23 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
         do {
             int y;
 
-            if (mti >= N)
-            {
+            if (mti >= N) {
                 int kk;
                 final int[] mt = this.mt;
                 final int[] mag01 = this.mag01;
 
                 for (kk = 0; kk < N - M; kk++) {
-                    y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                    mt[kk] = mt[kk+M] ^ (y >>> 1) ^ mag01[y & 0x1];
+                    y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                    mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
                 }
 
-                for (; kk < N-1; kk++) {
-                    y = (mt[kk] & UPPER_MASK) | (mt[kk+1] & LOWER_MASK);
-                    mt[kk] = mt[kk+(M-N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+                for (; kk < N - 1; kk++) {
+                    y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                    mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
                 }
 
-                y = (mt[N-1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-                mt[N-1] = mt[M-1] ^ (y >>> 1) ^ mag01[y & 0x1];
+                y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+                mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
 
                 mti = 0;
             }
@@ -882,16 +885,16 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
 
             bits = (y >>> 1);
             val = bits % n;
-        } while(bits - val + (n-1) < 0);
+        } while (bits - val + (n - 1) < 0);
 
         return val;
     }
 
-    public int nextInt(int minimum,int maximum) {
-        return minimum + (int)(nextDouble() * ((maximum - minimum) + 1));
+    public int nextInt(int minimum, int maximum) {
+        return minimum + (int) (nextDouble() * ((maximum - minimum) + 1));
     }
 
-    public double nextDouble(double minimum,double maximum) {
+    public double nextDouble(double minimum, double maximum) {
         double randomValue = 0;
 
         while (randomValue < minimum && randomValue > maximum)
@@ -918,7 +921,7 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
     public void writeState(DataOutputStream stream) throws IOException {
         int len = mt.length;
 
-        for (int x = 0; x < len;x++)
+        for (int x = 0; x < len; x++)
             stream.writeInt(mt[x]);
 
         len = mag01.length;
@@ -933,11 +936,11 @@ public class MersenneTwister extends Random implements Serializable, Cloneable {
 
     public Object clone() {
         try {
-            MersenneTwister f = (MersenneTwister)(super.clone());
+            MersenneTwister f = (MersenneTwister) (super.clone());
             f.mt = mt.clone();
             f.mag01 = mag01.clone();
             return f;
-        }  catch (CloneNotSupportedException e) {
+        } catch (CloneNotSupportedException e) {
             throw new InternalError();
         }
     }
