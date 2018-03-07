@@ -1,10 +1,9 @@
 package main;
 
+import random.MersenneTwister;
 import state.Excited;
 import state.Quiescent;
-import util.MersenneTwister;
-
-import java.util.Random;
+//import util.MersenneTwister;
 
 public class Grid {
     private Cell[][] grid;
@@ -12,7 +11,7 @@ public class Grid {
 
 
     private int gridSize = Configuration.instance.gridSize;
-    private double fireProbability = Configuration.instance.fireProbibility;
+    private double fireProbability = Configuration.instance.fireProbability;
     private MersenneTwister random = Configuration.instance.random;
 
     Grid() {
@@ -25,6 +24,7 @@ public class Grid {
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 if (random.nextBoolean(fireProbability)) {
+
                     cells[i][j] = new Cell(new Excited());
                 } else {
                     cells[i][j] = new Cell(new Quiescent());

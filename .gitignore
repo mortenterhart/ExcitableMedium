@@ -1,0 +1,10 @@
+# IDEA Configuration
+*.iml
+.idea/
+
+# Finder Thumbnails
+.DS_Store
+
+# Build output
+out/
+build/
