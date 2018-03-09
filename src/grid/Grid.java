@@ -1,5 +1,6 @@
-package main;
+package grid;
 
+import main.Configuration;
 import random.MersenneTwister;
 import state.Excited;
 import state.Quiescent;
@@ -10,7 +11,7 @@ public class Grid {
 
     private int gridSize = Configuration.instance.gridSize;
     private double fireProbability = Configuration.instance.fireProbability;
-    private MersenneTwister random = Configuration.instance.random;
+    private MersenneTwister random = Configuration.instance.mersenneTwister;
 
     public Grid() {
         this.time = 0;

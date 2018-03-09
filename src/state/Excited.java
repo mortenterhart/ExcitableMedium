@@ -1,7 +1,6 @@
 package state;
 
-import main.Cell;
-import state.IState;
+import grid.Cell;
 
 public class Excited implements IState {
     private int id = 2;

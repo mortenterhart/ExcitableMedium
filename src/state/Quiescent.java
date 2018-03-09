@@ -1,6 +1,6 @@
 package state;
 
-import main.Cell;
+import grid.Cell;
 
 public class Quiescent implements IState {
     private int id = 0;

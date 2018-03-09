@@ -1,7 +1,6 @@
 package state;
 
-import main.Cell;
-import state.IState;
+import grid.Cell;
 
 public class Refractory implements IState {
     int id = 1;

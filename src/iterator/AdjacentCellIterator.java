@@ -1,6 +1,6 @@
 package iterator;
 
-import main.Cell;
+import grid.Cell;
 
 import java.util.Iterator;
 

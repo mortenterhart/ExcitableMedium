@@ -1,5 +1,6 @@
-package main;
+package grid;
 
+import main.Configuration;
 import state.IState;
 
 import java.util.ArrayList;

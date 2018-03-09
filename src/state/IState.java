@@ -1,6 +1,6 @@
 package state;
 
-import main.Cell;
+import grid.Cell;
 
 public interface IState {
     void change(Cell cell);
