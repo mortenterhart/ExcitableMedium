@@ -2,6 +2,7 @@ package main;
 
 import config.Configuration;
 import config.WindowConfiguration;
+import gui.model.GuiController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -10,6 +11,13 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Application extends javafx.application.Application {
+
+
+    private String[] arguments;
+    private Thread algorithmThread;
+    private FXMLLoader loader;
+    private Stage primaryStage;
+    //private AnchorPane root;
 
     public void startApplication(String ... arguments) {
         launch(arguments);
@@ -34,5 +42,9 @@ public class Application extends javafx.application.Application {
         Thread algorithmThread = new Thread(new ExcitableMedium());
         algorithmThread.setDaemon(true);
         algorithmThread.start();
+    }
+
+    public GuiController getController() {
+        return loader.getController();
     }
 }
