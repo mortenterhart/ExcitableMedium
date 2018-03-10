@@ -48,12 +48,6 @@ public class CellGrid {
                             currentCell.markAsMutable();
                         }
 
-                        for (IState state: neighbourStates) {
-                            if (state instanceof Excited) {
-                                currentCell.markAsMutable();
-                            }
-                        }
-
                         break;
 
                     case excited:
