@@ -3,8 +3,6 @@ package main;
 import config.WindowConfiguration;
 import object.CellGrid;
 
-import java.io.IOException;
-
 public class ExcitableMedium implements Runnable {
 
     private CellGrid board;
@@ -25,14 +23,10 @@ public class ExcitableMedium implements Runnable {
      * @see Thread#run()
      */
     public void run() {
-        try {
-            simulateDevelopment();
-        } catch (IOException exc) {
-            exc.printStackTrace();
-        }
+        simulateDevelopment();
     }
 
-    private void simulateDevelopment() throws IOException {
+    private void simulateDevelopment() {
         board.print();
         for (int i = 0; i < 1000; i++) {
             board.markCellStateModifications();
