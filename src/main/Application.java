@@ -2,7 +2,7 @@ package main;
 
 import config.Configuration;
 import config.WindowConfiguration;
-import gui.model.GuiController;
+import gui.controller.GuiController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -12,14 +12,13 @@ import java.io.IOException;
 
 public class Application extends javafx.application.Application {
 
-
-    private String[] arguments;
-    private Thread algorithmThread;
     private FXMLLoader loader;
-    private Stage primaryStage;
-    //private AnchorPane root;
 
-    public void startApplication(String ... arguments) {
+    public Application() {
+        loader = new FXMLLoader(this.getClass().getResource(Configuration.instance.fxmlPackagePath));
+    }
+
+    public void startApplication(String... arguments) {
         launch(arguments);
     }
 
@@ -27,7 +26,7 @@ public class Application extends javafx.application.Application {
     public void start(final Stage primaryStage) throws IOException {
         primaryStage.setMaxHeight(WindowConfiguration.WINDOW_HEIGHT);
         primaryStage.setMaxWidth(WindowConfiguration.WINDOW_WIDTH);
-        Pane rootElement = FXMLLoader.load(this.getClass().getResource(Configuration.instance.fxmlPackagePath));
+        Pane rootElement = loader.load();
 
         primaryStage.setOnCloseRequest(event -> primaryStage.close());
 
