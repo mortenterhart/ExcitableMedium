@@ -28,7 +28,7 @@ public class ExcitableMedium implements Runnable {
 
     private void simulateDevelopment() {
         board.print();
-        for (int i = 0; i < 1000; i++) {
+        while (board.hasExcitedCells()) {
             board.markCellStateModifications();
             board.dispatchCellMutations();
             board.print();

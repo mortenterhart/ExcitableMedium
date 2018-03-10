@@ -1,5 +1,6 @@
 package object;
 
+import state.Excited;
 import state.IState;
 
 public class Cell {
@@ -24,6 +25,10 @@ public class Cell {
 
     public void setState(IState state) {
         this.state = state;
+    }
+
+    public boolean isExcited() {
+        return state instanceof Excited;
     }
 
     public void update() {

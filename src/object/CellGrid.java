@@ -25,15 +25,13 @@ public class CellGrid {
         grid = new Cell[gridSize][gridSize];
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-                //if (random.nextBoolean(fireProbability)) {
-                //grid[i][j] = new Cell(new Excited());
-                //} else {
-                grid[i][j] = new Cell(new Quiescent());
-                //}
+                if (random.nextBoolean(fireProbability)) {
+                    grid[i][j] = new Cell(new Excited());
+                } else {
+                    grid[i][j] = new Cell(new Quiescent());
+                }
             }
         }
-
-        grid[0][0] = new Cell(new Excited());
     }
 
     public void markCellStateModifications() {
@@ -89,6 +87,10 @@ public class CellGrid {
         return states;
     }
 
+    private boolean coordinatesInsideGrid(int x, int y) {
+        return x >= 0 && x < gridSize && y >= 0 && y < gridSize;
+    }
+
     public void dispatchCellMutations() {
         Arrays.stream(grid).forEach(cells -> Arrays.stream(cells).forEach(
                 cell -> {
@@ -99,8 +101,17 @@ public class CellGrid {
         ));
     }
 
-    private boolean coordinatesInsideGrid(int x, int y) {
-        return x >= 0 && x < gridSize && y >= 0 && y < gridSize;
+    public boolean hasExcitedCells() {
+        for (int x = 0; x < gridSize; x++) {
+            for (int y = 0; y < gridSize; y++) {
+                Cell currentCell = grid[x][y];
+                if (currentCell.isExcited()) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
 
     public void print() {
