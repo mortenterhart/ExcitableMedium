@@ -128,4 +128,8 @@ public class CellGrid {
             System.out.println();
         }
     }
+
+    public Cell getCell(int x, int y){
+        return grid[x][y];
+    }
 }
