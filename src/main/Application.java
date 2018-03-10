@@ -38,12 +38,8 @@ public class Application extends javafx.application.Application {
     }
 
     private void simulateExcitableMedium() {
-        Thread algorithmThread = new Thread(new ExcitableMedium());
+        Thread algorithmThread = new Thread(new ExcitableMedium(loader.getController()));
         algorithmThread.setDaemon(true);
         algorithmThread.start();
-    }
-
-    public GuiController getController() {
-        return loader.getController();
     }
 }

@@ -1,6 +1,7 @@
 package main;
 
 import config.WindowConfiguration;
+import gui.controller.GuiController;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import object.CellGrid;
@@ -8,10 +9,11 @@ import object.CellGrid;
 public class ExcitableMedium implements Runnable {
 
     private CellGrid board;
-    private Application application;
+    private GuiController controller;
 
-    public ExcitableMedium() {
+    public ExcitableMedium(GuiController controller) {
         board = new CellGrid();
+        this.controller = controller;
     }
 
     /**
@@ -39,15 +41,14 @@ public class ExcitableMedium implements Runnable {
 
             Platform.runLater(new Task<Void>() {
 
-
                 @Override
-            protected Void call() throws Exception {
-                //define here what should happen in GUI
-                application.getController().setGridwithCells(board);
-                return null;
-            }
+                protected Void call() {
+                    controller.setCellBoard(board);
 
-        });
+                    return null;
+                }
+
+            });
 
             waitInterval(WindowConfiguration.ITERATION_WAIT_INTERVAL);
         }
