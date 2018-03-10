@@ -1,30 +1,25 @@
 package state;
 
-import grid.Cell;
+import object.Cell;
 
 public class Quiescent implements IState {
-    private int id = 0;
+    private StateDescriptor descriptor = StateDescriptor.quiescent;
 
-    @Override
     public void change(Cell cell) {
-        //neighbor in fire -> cell in fire
-        for (Cell neighbour : cell.getNeighbours() ) {
-            if (neighbour.getCellState() instanceof Excited) {
-                cell.setState(new Excited());
-            }
-        }
+        cell.setState(new Excited());
+    }
 
-        //if no neighbor in fire, do nothing
-
+    public StateDescriptor getStateDescriptor() {
+        return descriptor;
     }
 
     @Override
-    public int getID() {
-        return id;
+    public boolean equals(Object object) {
+        return object != null && object instanceof Quiescent;
     }
 
     @Override
     public String toString() {
-        return "Q";
+        return (char) 27 + "[92mQ" + (char) 27 + "[0m";
     }
 }

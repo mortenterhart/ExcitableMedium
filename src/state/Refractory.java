@@ -1,25 +1,25 @@
 package state;
 
-import grid.Cell;
+import object.Cell;
 
 public class Refractory implements IState {
-    int id = 1;
+    private StateDescriptor descriptor = StateDescriptor.refractory;
 
-
-    @Override
     public void change(Cell cell) {
-        //t+1 -> Quiescent
         cell.setState(new Quiescent());
+    }
 
+    public StateDescriptor getStateDescriptor() {
+        return descriptor;
     }
 
     @Override
-    public int getID() {
-        return id;
+    public boolean equals(Object object) {
+        return object != null && object instanceof Refractory;
     }
 
     @Override
     public String toString() {
-        return "R";
+        return (char) 27 + "[93mR" + (char) 27 + "[0m";
     }
 }

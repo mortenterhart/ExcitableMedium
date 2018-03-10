@@ -1,8 +1,8 @@
 package state;
 
-import grid.Cell;
+import object.Cell;
 
 public interface IState {
     void change(Cell cell);
-    int getID();
+    StateDescriptor getStateDescriptor();
 }

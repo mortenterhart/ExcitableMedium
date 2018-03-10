@@ -1,23 +1,25 @@
 package state;
 
-import grid.Cell;
+import object.Cell;
 
 public class Excited implements IState {
-    private int id = 2;
+    private StateDescriptor descriptor = StateDescriptor.excited;
 
-
-    @Override
     public void change(Cell cell) {
-        //t+1 -> Refractory
         cell.setState(new Refractory());
     }
 
-    public int getID(){
-        return id;
+    public StateDescriptor getStateDescriptor(){
+        return descriptor;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return object != null && object instanceof Excited;
     }
 
     @Override
     public String toString() {
-        return "E";
+        return (char) 27 + "[91mE" + (char) 27 + "[0m";
     }
 }
