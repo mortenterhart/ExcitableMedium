@@ -80,19 +80,16 @@ public class GuiController {
 
             switch (updatedState) {
                 case quiescent:
-                    System.out.println("Cell " + row + ", " + column + " is quiescent");
                     currentField.setFill(Color.LIGHTGREEN);
                     break;
                 case excited:
-                    System.out.println("Cell " + row + ", " + column + " is excited");
                     currentField.setFill(Color.RED);
                     break;
                 case refractory:
-                    System.out.println("Cell " + row + ", " + column + " is refractory");
                     currentField.setFill(Color.YELLOW);
                     break;
                 default:
-                    System.out.println("No state");
+                    throw new IllegalStateException("state " + updatedState.name() + " is undefined");
             }
             childIndex++;
         }

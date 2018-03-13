@@ -35,6 +35,7 @@ public class ExcitableMedium implements Runnable {
 
     public void startSimulation() {
         started = true;
+        simulateDevelopment();
     }
 
     public void holdSimulation() {
@@ -48,7 +49,7 @@ public class ExcitableMedium implements Runnable {
     public void simulateDevelopment() {
         while (board.hasExcitedCells() && started) {
             if (hold) {
-                while(hold);
+                waitUntilHoldDisabled();
             }
 
             board.markCellStateModifications();
@@ -69,7 +70,7 @@ public class ExcitableMedium implements Runnable {
         }
     }
 
-    private void checkIfSimulationHold() {
+    private void waitUntilHoldDisabled() {
         while(hold);
     }
 
