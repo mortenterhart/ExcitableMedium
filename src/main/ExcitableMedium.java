@@ -10,6 +10,8 @@ public class ExcitableMedium implements Runnable {
 
     private CellGrid board;
     private GuiController controller;
+    private boolean started = false;
+    private boolean hold = false;
 
     public ExcitableMedium(GuiController controller) {
         board = new CellGrid();
@@ -28,23 +30,36 @@ public class ExcitableMedium implements Runnable {
      * @see Thread#run()
      */
     public void run() {
-        simulateDevelopment();
+        controller.setAlgorithm(this);
     }
 
-    private void simulateDevelopment() {
-        board.print();
-        while (board.hasExcitedCells()) {
+    public void startSimulation() {
+        started = true;
+    }
+
+    public void holdSimulation() {
+        hold = !hold;
+    }
+
+    public void stopSimulation() {
+        started = false;
+    }
+
+    public void simulateDevelopment() {
+        while (board.hasExcitedCells() && started) {
+            if (hold) {
+                while(hold);
+            }
+
             board.markCellStateModifications();
             board.dispatchCellMutations();
-            board.print();
-
 
             Platform.runLater(new Task<Void>() {
 
                 @Override
                 protected Void call() {
-                    controller.setCellBoard(board);
-
+                    controller.setCellBoard(board.getCellBoard());
+                    controller.updateGrid();
                     return null;
                 }
 
@@ -52,6 +67,10 @@ public class ExcitableMedium implements Runnable {
 
             waitInterval(WindowConfiguration.ITERATION_WAIT_INTERVAL);
         }
+    }
+
+    private void checkIfSimulationHold() {
+        while(hold);
     }
 
     private void waitInterval(long millis) {

@@ -114,21 +114,6 @@ public class CellGrid {
         return false;
     }
 
-    public void print() {
-        System.out.print("  ");
-        for (int i = 0; i < gridSize; i++) {
-            System.out.printf("%2d ", i);
-        }
-        System.out.println();
-        for (int i = 0; i < gridSize; i++) {
-            System.out.printf("%2d ", i);
-            for (int j = 0; j < gridSize; j++) {
-                System.out.print(grid[i][j].getCellState() + "  ");
-            }
-            System.out.println();
-        }
-    }
-
     public Cell[][] getCellBoard(){
         return grid;
     }
