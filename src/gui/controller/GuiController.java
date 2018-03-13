@@ -11,6 +11,7 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -27,6 +28,9 @@ public class GuiController {
     private ExcitableMedium algorithm;
 
     @FXML
+    private Slider speedSlider;
+
+    @FXML
     private GridPane gridPane;
 
     @FXML
@@ -41,6 +45,9 @@ public class GuiController {
     @FXML
     public void initialize() {
         indexConverter = new GraduallyIndexConverter(gridSize);
+        startButton.setDisable(false);
+        stopButton.setDisable(true);
+        holdButton.setDisable(true);
 
         int gridLength = (int) Math.pow(gridPane.getRowConstraints().size(), 2);
         for (int index = 0; index < gridLength; index++) {
@@ -57,16 +64,24 @@ public class GuiController {
     @FXML
     public void startSimulation(ActionEvent actionEvent) {
         algorithm.startSimulation();
+        toggleButtonActivation();
     }
 
     @FXML
     public void stopSimulation(ActionEvent actionEvent) {
         algorithm.stopSimulation();
+        toggleButtonActivation();
     }
 
     @FXML
     public void holdSimulation(ActionEvent actionEvent) {
         algorithm.holdSimulation();
+    }
+
+    private void toggleButtonActivation() {
+        startButton.setDisable(!startButton.disabledProperty().get());
+        stopButton.setDisable(!stopButton.disabledProperty().get());
+        holdButton.setDisable(!holdButton.disabledProperty().get());
     }
 
     public void updateGrid() {
