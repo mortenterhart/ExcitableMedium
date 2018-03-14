@@ -34,9 +34,7 @@ public class ExcitableMedium implements Runnable {
         controller.setCellBoard(board.getCellBoard());
 
         while (true) {
-            System.out.println("Thread is running, status: " + started);
             if (started) {
-                System.out.println("Started");
                 simulateDevelopment();
             }
         }
@@ -56,12 +54,9 @@ public class ExcitableMedium implements Runnable {
 
     public void simulateDevelopment() {
         while (board.hasExcitedCells() && started) {
-            if (hold) {
-                waitUntilHoldDisabled();
-            }
-
             board.markCellStateModifications();
             board.dispatchCellMutations();
+            waitIfSimulationHold();
 
             Platform.runLater(new Task<Void>() {
 
@@ -78,8 +73,8 @@ public class ExcitableMedium implements Runnable {
         started = false;
     }
 
-    private void waitUntilHoldDisabled() {
-        while(hold);
+    private void waitIfSimulationHold() {
+        while(hold) { }
     }
 
     private void waitInterval(long millis) {
