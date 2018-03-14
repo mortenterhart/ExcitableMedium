@@ -46,6 +46,7 @@ public class CellGrid {
                             currentCell.markAsMutable();
                         }
 
+                        System.out.println("Cell " + currentCell + " is excited");
                         break;
 
                     case excited:

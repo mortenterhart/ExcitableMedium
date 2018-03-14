@@ -31,11 +31,19 @@ public class ExcitableMedium implements Runnable {
      */
     public void run() {
         controller.setAlgorithm(this);
+        controller.setCellBoard(board.getCellBoard());
+
+        while (true) {
+            System.out.println("Thread is running, status: " + started);
+            if (started) {
+                System.out.println("Started");
+                simulateDevelopment();
+            }
+        }
     }
 
     public void startSimulation() {
         started = true;
-        simulateDevelopment();
     }
 
     public void holdSimulation() {
@@ -59,7 +67,6 @@ public class ExcitableMedium implements Runnable {
 
                 @Override
                 protected Void call() {
-                    controller.setCellBoard(board.getCellBoard());
                     controller.updateGrid();
                     return null;
                 }
@@ -68,6 +75,7 @@ public class ExcitableMedium implements Runnable {
 
             waitInterval(WindowConfiguration.ITERATION_WAIT_INTERVAL);
         }
+        started = false;
     }
 
     private void waitUntilHoldDisabled() {
