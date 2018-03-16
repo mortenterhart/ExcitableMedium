@@ -18,10 +18,10 @@ public class CellGrid {
     private MersenneTwister random = Configuration.instance.mersenneTwister;
 
     public CellGrid() {
-        buildGrid();
+        randomizeStartConstellation();
     }
 
-    private void buildGrid() {
+    public void randomizeStartConstellation() {
         grid = new Cell[gridSize][gridSize];
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
@@ -45,8 +45,6 @@ public class CellGrid {
                         if (anyNeighbourOnFire(neighbourStates)) {
                             currentCell.markAsMutable();
                         }
-
-                        System.out.println("Cell " + currentCell + " is excited");
                         break;
 
                     case excited:
@@ -99,6 +97,12 @@ public class CellGrid {
                         cell.update();
                     }
                 }
+        ));
+    }
+
+    public void resetToQuiescent() {
+        Arrays.stream(grid).forEach(cells -> Arrays.stream(cells).forEach(
+                cell -> cell.setState(new Quiescent())
         ));
     }
 

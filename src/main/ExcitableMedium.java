@@ -34,6 +34,7 @@ public class ExcitableMedium implements Runnable {
         controller.setCellBoard(board.getCellBoard());
 
         while (true) {
+            System.out.println();
             if (started) {
                 simulateDevelopment();
             }
@@ -53,28 +54,49 @@ public class ExcitableMedium implements Runnable {
     }
 
     public void simulateDevelopment() {
+        System.out.println("Simulation started");
+        board.randomizeStartConstellation();
+        updateGUIGridPane();
+
         while (board.hasExcitedCells() && started) {
             board.markCellStateModifications();
             board.dispatchCellMutations();
             waitIfSimulationHold();
 
-            Platform.runLater(new Task<Void>() {
-
-                @Override
-                protected Void call() {
-                    controller.updateGrid();
-                    return null;
-                }
-
-            });
+            updateGUIGridPane();
 
             waitInterval(WindowConfiguration.ITERATION_WAIT_INTERVAL);
         }
+
+        board.resetToQuiescent();
+        updateGUIGridPane();
+        System.out.println("Simulation ended");
         started = false;
     }
 
+    private void updateGUIGridPane() {
+        Platform.runLater(new Task<Void>() {
+            /**
+             * Invoked when the Task is executed, the call method must be overridden and
+             * implemented by subclasses. The call method actually performs the
+             * background thread logic. Only the updateProgress, updateMessage, updateValue and
+             * updateTitle methods of Task may be called from code within this method.
+             * Any other interaction with the Task from the background thread will result
+             * in runtime exceptions.
+             *
+             * @return The result of the background work, if any.
+             */
+            @Override
+            protected Void call() {
+                controller.updateGrid();
+                return null;
+            }
+        });
+    }
+
     private void waitIfSimulationHold() {
-        while(hold) { }
+        while (hold) {
+        }
     }
 
     private void waitInterval(long millis) {

@@ -72,6 +72,7 @@ public class GuiController {
     @FXML
     public void holdSimulation(ActionEvent actionEvent) {
         algorithm.holdSimulation();
+        stopButton.setDisable(!stopButton.disabledProperty().get());
     }
 
     private void toggleButtonActivation() {
@@ -84,19 +85,27 @@ public class GuiController {
         int childIndex = 0;
         Iterator<Rectangle> gridIterator = new GridPaneIterator(gridPane);
         while (gridIterator.hasNext()) {
+            //System.out.println("gridIterator has next cell");
             Rectangle currentField = gridIterator.next();
+            System.out.println("Calculating currentField");
             int row = indexConverter.convertToRow(childIndex);
+            System.out.println("Calculating row");
             int column = indexConverter.convertToColumn(childIndex);
+            System.out.println("Calculating column");
             StateDescriptor updatedState = cellBoard[row][column].getCellState().getStateDescriptor();
+            System.out.println("cell is in state " + updatedState.name());
 
             switch (updatedState) {
                 case quiescent:
+                    System.out.println("cell is quiescent");
                     currentField.setFill(Color.LIGHTGREEN);
                     break;
                 case excited:
+                    System.out.println("cell is excited");
                     currentField.setFill(Color.RED);
                     break;
                 case refractory:
+                    System.out.println("cell is refractory");
                     currentField.setFill(Color.YELLOW);
                     break;
                 default:

@@ -7,10 +7,10 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0"
       prefWidth="653.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="gui.controller.GuiController">
+    <Slider fx:id="speedSlider" min="100.0" max="1000.0" value="500.0"
+            showTickLabels="true" showTickMarks="true" />
     <GridPane fx:id="gridPane" gridLinesVisible="true" layoutX="72.0" layoutY="9.0" prefHeight="499.0"
               prefWidth="499.0">
-        <Slider fx:id="speedSlider" min="100.0" max="1000.0" value="500.0"
-                showTickLabels="true" showTickMarks="true" />
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>

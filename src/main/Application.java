@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 public class Application extends javafx.application.Application {
 
     private FXMLLoader loader;
+    private ExcitableMedium algorithm;
 
     public Application() {
         loader = new FXMLLoader(this.getClass().getResource(Configuration.instance.fxmlPackagePath));
@@ -35,7 +36,10 @@ public class Application extends javafx.application.Application {
         primaryStage.setResizable(false);
         Pane rootElement = loader.load();
 
-        primaryStage.setOnCloseRequest(event -> primaryStage.close());
+        primaryStage.setOnCloseRequest(event -> {
+            algorithm.stopSimulation();
+            primaryStage.close();
+        });
 
         Scene guiScene = new Scene(rootElement, WindowConfiguration.WINDOW_WIDTH, WindowConfiguration.WINDOW_HEIGHT);
         primaryStage.setScene(guiScene);
@@ -45,7 +49,8 @@ public class Application extends javafx.application.Application {
     }
 
     private void simulateExcitableMedium() {
-        Thread algorithmThread = new Thread(new ExcitableMedium(loader.getController()));
+        algorithm = new ExcitableMedium(loader.getController());
+        Thread algorithmThread = new Thread(algorithm);
         algorithmThread.setDaemon(true);
         algorithmThread.start();
     }
