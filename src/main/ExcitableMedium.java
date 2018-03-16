@@ -53,7 +53,7 @@ public class ExcitableMedium implements Runnable {
         started = false;
     }
 
-    public void simulateDevelopment() {
+    private void simulateDevelopment() {
         System.out.println("Simulation started");
         board.randomizeStartConstellation();
         updateGUIGridPane();

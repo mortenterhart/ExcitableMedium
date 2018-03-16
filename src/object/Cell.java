@@ -1,11 +1,13 @@
 package object;
 
-import state.Excited;
+import config.Configuration;
+import state.ExcitedState;
 import state.IState;
 
 public class Cell {
     private IState state;
     private boolean stateWillBeMutated = false;
+    private int refractoryCounter = 0;
 
     public Cell(IState state) {
         this.state = state;
@@ -23,12 +25,24 @@ public class Cell {
         return stateWillBeMutated;
     }
 
+    public void incrementRefractoryCounter() {
+        refractoryCounter++;
+    }
+
+    public void resetRefractoryCounter() {
+        refractoryCounter = 0;
+    }
+
+    public boolean hasFinishedRefractorinessPhase() {
+        return refractoryCounter >= Configuration.instance.refractoryDuration - 1;
+    }
+
     public void setState(IState state) {
         this.state = state;
     }
 
     public boolean isExcited() {
-        return state instanceof Excited;
+        return state instanceof ExcitedState;
     }
 
     public void update() {

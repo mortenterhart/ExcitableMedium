@@ -2,9 +2,9 @@ package object;
 
 import config.Configuration;
 import random.MersenneTwister;
-import state.Excited;
+import state.ExcitedState;
 import state.IState;
-import state.Quiescent;
+import state.QuiescentState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,17 +18,16 @@ public class CellGrid {
     private MersenneTwister random = Configuration.instance.mersenneTwister;
 
     public CellGrid() {
-        randomizeStartConstellation();
+        grid = new Cell[gridSize][gridSize];
     }
 
     public void randomizeStartConstellation() {
-        grid = new Cell[gridSize][gridSize];
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 if (random.nextBoolean(fireProbability)) {
-                    grid[i][j] = new Cell(new Excited());
+                    grid[i][j] = new Cell(new ExcitedState());
                 } else {
-                    grid[i][j] = new Cell(new Quiescent());
+                    grid[i][j] = new Cell(new QuiescentState());
                 }
             }
         }
@@ -48,8 +47,15 @@ public class CellGrid {
                         break;
 
                     case excited:
-                    case refractory:
                         currentCell.markAsMutable();
+                        break;
+                    case refractory:
+                        if (currentCell.hasFinishedRefractorinessPhase()) {
+                            currentCell.markAsMutable();
+                            currentCell.resetRefractoryCounter();
+                        } else {
+                            currentCell.incrementRefractoryCounter();
+                        }
                         break;
                 }
             }
@@ -58,7 +64,7 @@ public class CellGrid {
 
     private boolean anyNeighbourOnFire(List<IState> neighbourStates) {
         for (IState state : neighbourStates) {
-            if (state instanceof Excited) {
+            if (state instanceof ExcitedState) {
                 return true;
             }
         }
@@ -102,7 +108,7 @@ public class CellGrid {
 
     public void resetToQuiescent() {
         Arrays.stream(grid).forEach(cells -> Arrays.stream(cells).forEach(
-                cell -> cell.setState(new Quiescent())
+                cell -> cell.setState(new QuiescentState())
         ));
     }
 

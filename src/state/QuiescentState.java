@@ -2,11 +2,11 @@ package state;
 
 import object.Cell;
 
-public class Quiescent implements IState {
+public class QuiescentState implements IState {
     private StateDescriptor descriptor = StateDescriptor.quiescent;
 
     public void change(Cell cell) {
-        cell.setState(new Excited());
+        cell.setState(new ExcitedState());
     }
 
     public StateDescriptor getStateDescriptor() {
@@ -15,7 +15,7 @@ public class Quiescent implements IState {
 
     @Override
     public boolean equals(Object object) {
-        return object != null && object instanceof Quiescent;
+        return object != null && object instanceof QuiescentState;
     }
 
     @Override

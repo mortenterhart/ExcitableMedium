@@ -2,11 +2,11 @@ package state;
 
 import object.Cell;
 
-public class Refractory implements IState {
+public class RefractoryState implements IState {
     private StateDescriptor descriptor = StateDescriptor.refractory;
 
     public void change(Cell cell) {
-        cell.setState(new Quiescent());
+        cell.setState(new QuiescentState());
     }
 
     public StateDescriptor getStateDescriptor() {
@@ -15,7 +15,7 @@ public class Refractory implements IState {
 
     @Override
     public boolean equals(Object object) {
-        return object != null && object instanceof Refractory;
+        return object != null && object instanceof RefractoryState;
     }
 
     @Override
