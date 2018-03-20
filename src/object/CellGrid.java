@@ -21,6 +21,10 @@ public class CellGrid {
         grid = new Cell[gridSize][gridSize];
     }
 
+    private CellGrid(Cell[][] grid) {
+        this.grid = grid;
+    }
+
     public void randomizeStartConstellation() {
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {

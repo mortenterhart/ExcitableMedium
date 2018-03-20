@@ -1,7 +1,9 @@
 package gui.controller;
 
 import config.Configuration;
-import javafx.event.ActionEvent;
+import config.WindowConfiguration;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -13,12 +15,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import main.ExcitableMedium;
 import object.Cell;
+import object.CellGrid;
+import state.IState;
 import state.StateDescriptor;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class GuiController {
     private Cell[][] cellBoard;
+    private List<IState[][]> algorithmStates;
     private int gridSize = Configuration.instance.gridSize;
     private GraduallyIndexConverter indexConverter;
     private ExcitableMedium algorithm;
@@ -40,10 +47,19 @@ public class GuiController {
 
     @FXML
     public void initialize() {
+        algorithmStates = new ArrayList<>();
         indexConverter = new GraduallyIndexConverter(gridSize);
         startButton.setDisable(false);
         stopButton.setDisable(true);
         holdButton.setDisable(true);
+
+        speedSlider.valueProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                setExecutionSpeed(newValue.longValue());
+            }
+        });
 
         int gridLength = (int) Math.pow(gridPane.getRowConstraints().size(), 2);
         for (int index = 0; index < gridLength; index++) {
@@ -54,23 +70,27 @@ public class GuiController {
         }
 
         gridPane.setAlignment(Pos.CENTER);
-        gridPane.setGridLinesVisible(true);
+        gridPane.setGridLinesVisible(false);
+    }
+
+    private void setExecutionSpeed(long value) {
+        WindowConfiguration.setIterationWaitInterval(1000L - value);
     }
 
     @FXML
-    public void startSimulation(ActionEvent actionEvent) {
+    public void startSimulation() {
         algorithm.startSimulation();
         toggleButtonActivation();
     }
 
     @FXML
-    public void stopSimulation(ActionEvent actionEvent) {
+    public void stopSimulation() {
         algorithm.stopSimulation();
         toggleButtonActivation();
     }
 
     @FXML
-    public void holdSimulation(ActionEvent actionEvent) {
+    public void holdSimulation() {
         algorithm.holdSimulation();
         stopButton.setDisable(!stopButton.disabledProperty().get());
     }
@@ -85,7 +105,7 @@ public class GuiController {
         int childIndex = 0;
         Iterator<Rectangle> gridIterator = new GridPaneIterator(gridPane);
         while (gridIterator.hasNext()) {
-            //System.out.println("gridIterator has next cell");
+            System.out.println("gridIterator has next cell");
             Rectangle currentField = gridIterator.next();
             System.out.println("Calculating currentField");
             int row = indexConverter.convertToRow(childIndex);
@@ -121,5 +141,9 @@ public class GuiController {
 
     public void setAlgorithm(ExcitableMedium algorithm) {
         this.algorithm = algorithm;
+    }
+
+    public void setAlgorithmStates(List<IState[][]> algorithmStates) {
+        this.algorithmStates = algorithmStates;
     }
 }

@@ -13,4 +13,5 @@ public enum Configuration {
     public int numberOfNeighbours = 4;
     public int refractoryDuration = 2;
     public MersenneTwister mersenneTwister = new MersenneTwister();
+
 }

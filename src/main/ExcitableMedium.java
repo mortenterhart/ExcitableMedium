@@ -4,7 +4,13 @@ import config.WindowConfiguration;
 import gui.controller.GuiController;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import object.Cell;
 import object.CellGrid;
+import state.IState;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ExcitableMedium implements Runnable {
 
@@ -12,10 +18,12 @@ public class ExcitableMedium implements Runnable {
     private GuiController controller;
     private boolean started = false;
     private boolean hold = false;
+    private List<IState[][]> cellGridStates;
 
     public ExcitableMedium(GuiController controller) {
-        board = new CellGrid();
         this.controller = controller;
+        board = new CellGrid();
+        cellGridStates = new ArrayList<>();
     }
 
     /**
@@ -56,6 +64,7 @@ public class ExcitableMedium implements Runnable {
     private void simulateDevelopment() {
         System.out.println("Simulation started");
         board.randomizeStartConstellation();
+        encapsulateCellStates();
         updateGUIGridPane();
 
         while (board.hasExcitedCells() && started) {
@@ -72,6 +81,24 @@ public class ExcitableMedium implements Runnable {
         updateGUIGridPane();
         System.out.println("Simulation ended");
         started = false;
+        cellGridStates.clear();
+    }
+
+    private void encapsulateCellStates() {
+        Cell[][] cellStates = board.getCellBoard();
+        IState[][] states = new IState[cellStates.length][cellStates[0].length];
+
+        for (int x = 0; x < cellStates.length; x++) {
+            for (int y = 0; y < cellStates[x].length; y++) {
+                states[x][y] = cellStates[x][y].getCellState();
+            }
+        }
+
+        cellGridStates.add(states);
+    }
+
+    private void dispatchStatesToController() {
+        controller.setAlgorithmStates(cellGridStates);
     }
 
     private void updateGUIGridPane() {
