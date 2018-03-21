@@ -2,6 +2,7 @@ package gui.controller;
 
 import config.Configuration;
 import config.WindowConfiguration;
+import gui.util.GraduallyIndexConverter;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -9,32 +10,47 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import main.ExcitableMedium;
-import object.Cell;
-import object.CellGrid;
 import state.IState;
-import state.StateDescriptor;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class GuiController {
-    private Cell[][] cellBoard;
-    private List<IState[][]> algorithmStates;
     private int gridSize = Configuration.instance.gridSize;
     private GraduallyIndexConverter indexConverter;
-    private ExcitableMedium algorithm;
+
+    private List<IState[][]> algorithmStates;
+    private int algorithmStateCounter = 0;
+    private GridDisplayDriver displayDriver;
+
+    // GUI Configuration and Status Panes
+
+    @FXML
+    private Pane stateRevisionPane;
+
+    @FXML
+    private Label iterationLabel;
+
+    // Configuration Slider
 
     @FXML
     private Slider speedSlider;
 
     @FXML
+    private Slider excitabilitySlider;
+
+    // Simulation Matrix
+
+    @FXML
     private GridPane gridPane;
+
+    // GUI Control Buttons
 
     @FXML
     private Button startButton;
@@ -46,13 +62,52 @@ public class GuiController {
     private Button holdButton;
 
     @FXML
-    public void initialize() {
+    private Button previousStateButton;
+
+    @FXML
+    private Button nextStateButton;
+
+    @FXML
+    private void initialize() {
         algorithmStates = new ArrayList<>();
         indexConverter = new GraduallyIndexConverter(gridSize);
+
+        initializeGUIActivation();
+        buildRoundedCornersAroundStatePane();
+        listenToSliderChanges();
+        addColoredRectanglesToGrid();
+
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setGridLinesVisible(false);
+    }
+
+    private void initializeGUIActivation() {
         startButton.setDisable(false);
         stopButton.setDisable(true);
         holdButton.setDisable(true);
+        previousStateButton.setDisable(true);
+        nextStateButton.setDisable(true);
 
+        stateRevisionPane.setDisable(true);
+    }
+
+    private void buildRoundedCornersAroundStatePane() {
+        CornerRadii radii = new CornerRadii(10, 10, 10, 10, false);
+        stateRevisionPane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, radii, BorderWidths.DEFAULT)));
+    }
+
+    private void addColoredRectanglesToGrid() {
+        int gridLength = (int) Math.pow(gridPane.getRowConstraints().size(), 2);
+        for (int index = 0; index < gridLength; index++) {
+            Rectangle colorLayer = new Rectangle(21, 21, Color.LIGHTGREEN);
+            gridPane.add(colorLayer, indexConverter.convertToColumn(index), indexConverter.convertToRow(index));
+            GridPane.setHalignment(colorLayer, HPos.CENTER);
+            GridPane.setValignment(colorLayer, VPos.CENTER);
+        }
+
+    }
+
+    private void listenToSliderChanges() {
         speedSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
             @Override
@@ -61,16 +116,13 @@ public class GuiController {
             }
         });
 
-        int gridLength = (int) Math.pow(gridPane.getRowConstraints().size(), 2);
-        for (int index = 0; index < gridLength; index++) {
-            Rectangle colorLayer = new Rectangle(21, 21, Color.LIGHTGREEN);
-            gridPane.add(colorLayer, index % gridSize, index / gridSize);
-            GridPane.setHalignment(colorLayer, HPos.CENTER);
-            GridPane.setValignment(colorLayer, VPos.CENTER);
-        }
+        excitabilitySlider.valueProperty().addListener(new ChangeListener<Number>() {
 
-        gridPane.setAlignment(Pos.CENTER);
-        gridPane.setGridLinesVisible(false);
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                Configuration.instance.fireProbability = newValue.doubleValue() / 100.0;
+            }
+        });
     }
 
     private void setExecutionSpeed(long value) {
@@ -78,69 +130,85 @@ public class GuiController {
     }
 
     @FXML
-    public void startSimulation() {
-        algorithm.startSimulation();
-        toggleButtonActivation();
+    private void startSimulation() {
+        resetCellStatesIndex();
+        instructDisplayDriver();
+        activateComponentsOnStart();
+    }
+
+    private void instructDisplayDriver() {
+        Thread algorithmThread = new Thread(new ExcitableMedium(this));
+        algorithmThread.setDaemon(true);
+        algorithmThread.start();
+
+        displayDriver = new GridDisplayDriver(gridPane, algorithmStates);
+        displayDriver.setIterationLabel(iterationLabel);
+        Thread driverThread = new Thread(displayDriver);
+        driverThread.setDaemon(true);
+        driverThread.start();
     }
 
     @FXML
-    public void stopSimulation() {
-        algorithm.stopSimulation();
-        toggleButtonActivation();
+    private void stopSimulation() {
+        resetCellStatesIndex();
+        displayDriver.stop();
+        toggleControlButtonActivation();
+        toggleStateButtonActivation();
     }
 
     @FXML
-    public void holdSimulation() {
-        algorithm.holdSimulation();
+    private void holdSimulation() {
+        displayDriver.toggleHold();
         stopButton.setDisable(!stopButton.disabledProperty().get());
     }
 
-    private void toggleButtonActivation() {
+    @FXML
+    private void moveToPreviousState() {
+        if (displayDriver.isAtLastState()) {
+            nextStateButton.setDisable(false);
+        }
+
+        displayDriver.returnToPreviousState();
+        displayDriver.updateCurrentState();
+
+        if (displayDriver.isAtFirstState()) {
+            previousStateButton.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void moveToNextState() {
+        if (displayDriver.isAtFirstState()) {
+            previousStateButton.setDisable(false);
+        }
+
+        displayDriver.proceedToNextState();
+        displayDriver.updateCurrentState();
+
+        if (displayDriver.isAtLastState()) {
+            nextStateButton.setDisable(true);
+        }
+    }
+
+    private void activateComponentsOnStart() {
+        stateRevisionPane.setDisable(false);
+        toggleControlButtonActivation();
+        toggleStateButtonActivation();
+    }
+
+    private void toggleControlButtonActivation() {
         startButton.setDisable(!startButton.disabledProperty().get());
         stopButton.setDisable(!stopButton.disabledProperty().get());
         holdButton.setDisable(!holdButton.disabledProperty().get());
     }
 
-    public void updateGrid() {
-        int childIndex = 0;
-        Iterator<Rectangle> gridIterator = new GridPaneIterator(gridPane);
-        while (gridIterator.hasNext()) {
-            System.out.println("gridIterator has next cell");
-            Rectangle currentField = gridIterator.next();
-            System.out.println("Calculating currentField");
-            int row = indexConverter.convertToRow(childIndex);
-            System.out.println("Calculating row");
-            int column = indexConverter.convertToColumn(childIndex);
-            System.out.println("Calculating column");
-            StateDescriptor updatedState = cellBoard[row][column].getCellState().getStateDescriptor();
-            System.out.println("cell is in state " + updatedState.name());
-
-            switch (updatedState) {
-                case quiescent:
-                    System.out.println("cell is quiescent");
-                    currentField.setFill(Color.LIGHTGREEN);
-                    break;
-                case excited:
-                    System.out.println("cell is excited");
-                    currentField.setFill(Color.RED);
-                    break;
-                case refractory:
-                    System.out.println("cell is refractory");
-                    currentField.setFill(Color.YELLOW);
-                    break;
-                default:
-                    throw new IllegalStateException("state " + updatedState.name() + " is undefined");
-            }
-            childIndex++;
-        }
+    private void toggleStateButtonActivation() {
+        previousStateButton.setDisable(!previousStateButton.disabledProperty().get());
+        nextStateButton.setDisable(!nextStateButton.disabledProperty().get());
     }
 
-    public void setCellBoard(Cell[][] cellBoard) {
-        this.cellBoard = cellBoard;
-    }
-
-    public void setAlgorithm(ExcitableMedium algorithm) {
-        this.algorithm = algorithm;
+    private void resetCellStatesIndex() {
+        algorithmStateCounter = 0;
     }
 
     public void setAlgorithmStates(List<IState[][]> algorithmStates) {

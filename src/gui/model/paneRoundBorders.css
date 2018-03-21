@@ -1,0 +1,7 @@
+.stateRevisionPane {
+    -fx-border-color: rgba(97, 97, 97, 0.96);
+    -fx-border-radius: 20 20 20 20;
+    -fx-background-radius: 20;
+
+    /* top-left, top-right, bottom-right, and bottom-left corners, in that order. */
+}

@@ -2,8 +2,9 @@ package config;
 
 public class WindowConfiguration {
 
-    public static int WINDOW_WIDTH = 653;
-    public static int WINDOW_HEIGHT = 614;
+    public static final String TITLE = "Excitable Medium Simulation";
+    public static int WINDOW_WIDTH = 880;
+    public static int WINDOW_HEIGHT = 595;
 
     public static long ITERATION_WAIT_INTERVAL = 500;
 

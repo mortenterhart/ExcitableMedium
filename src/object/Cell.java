@@ -3,6 +3,7 @@ package object;
 import config.Configuration;
 import state.ExcitedState;
 import state.IState;
+import state.RefractoryState;
 
 public class Cell {
     private IState state;
@@ -43,6 +44,10 @@ public class Cell {
 
     public boolean isExcited() {
         return state instanceof ExcitedState;
+    }
+
+    public boolean isRefractory() {
+        return state instanceof RefractoryState;
     }
 
     public void update() {

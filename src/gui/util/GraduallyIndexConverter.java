@@ -1,4 +1,4 @@
-package gui.controller;
+package gui.util;
 
 public class GraduallyIndexConverter {
     private final int numberElementsPerRow;

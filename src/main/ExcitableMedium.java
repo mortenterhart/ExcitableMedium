@@ -1,6 +1,5 @@
 package main;
 
-import config.WindowConfiguration;
 import gui.controller.GuiController;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -9,15 +8,12 @@ import object.CellGrid;
 import state.IState;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ExcitableMedium implements Runnable {
 
     private CellGrid board;
     private GuiController controller;
-    private boolean started = false;
-    private boolean hold = false;
     private List<IState[][]> cellGridStates;
 
     public ExcitableMedium(GuiController controller) {
@@ -38,50 +34,20 @@ public class ExcitableMedium implements Runnable {
      * @see Thread#run()
      */
     public void run() {
-        controller.setAlgorithm(this);
-        controller.setCellBoard(board.getCellBoard());
-
-        while (true) {
-            System.out.println();
-            if (started) {
-                simulateDevelopment();
-            }
-        }
-    }
-
-    public void startSimulation() {
-        started = true;
-    }
-
-    public void holdSimulation() {
-        hold = !hold;
-    }
-
-    public void stopSimulation() {
-        started = false;
+        simulateDevelopment();
     }
 
     private void simulateDevelopment() {
-        System.out.println("Simulation started");
         board.randomizeStartConstellation();
         encapsulateCellStates();
-        updateGUIGridPane();
 
-        while (board.hasExcitedCells() && started) {
+        while (board.containsExcitedOrRefractoryCells()) {
             board.markCellStateModifications();
             board.dispatchCellMutations();
-            waitIfSimulationHold();
-
-            updateGUIGridPane();
-
-            waitInterval(WindowConfiguration.ITERATION_WAIT_INTERVAL);
+            encapsulateCellStates();
         }
 
-        board.resetToQuiescent();
-        updateGUIGridPane();
-        System.out.println("Simulation ended");
-        started = false;
-        cellGridStates.clear();
+        dispatchStatesToController();
     }
 
     private void encapsulateCellStates() {
@@ -115,22 +81,9 @@ public class ExcitableMedium implements Runnable {
              */
             @Override
             protected Void call() {
-                controller.updateGrid();
+                //controller.updateGrid();
                 return null;
             }
         });
-    }
-
-    private void waitIfSimulationHold() {
-        while (hold) {
-        }
-    }
-
-    private void waitInterval(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException exc) {
-            exc.printStackTrace(System.err);
-        }
     }
 }

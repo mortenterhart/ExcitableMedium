@@ -1,4 +1,4 @@
-package gui.controller;
+package gui.util;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Group;

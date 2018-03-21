@@ -116,7 +116,7 @@ public class CellGrid {
         ));
     }
 
-    public boolean hasExcitedCells() {
+    public boolean containsExcitedCells() {
         for (int x = 0; x < gridSize; x++) {
             for (int y = 0; y < gridSize; y++) {
                 Cell currentCell = grid[x][y];
@@ -126,6 +126,19 @@ public class CellGrid {
             }
         }
         
+        return false;
+    }
+
+    public boolean containsExcitedOrRefractoryCells() {
+        for (int x = 0; x < gridSize; x++) {
+            for (int y = 0; y < gridSize; y++) {
+                Cell currentCell = grid[x][y];
+                if (currentCell.isExcited() || currentCell.isRefractory()) {
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
