@@ -3,6 +3,7 @@ package gui.controller;
 import config.Configuration;
 import config.WindowConfiguration;
 import gui.util.GraduallyIndexConverter;
+import gui.util.GridPaneIterator;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -19,6 +20,7 @@ import main.ExcitableMedium;
 import state.IState;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class GuiController {
@@ -26,7 +28,6 @@ public class GuiController {
     private GraduallyIndexConverter indexConverter;
 
     private List<IState[][]> algorithmStates;
-    private int algorithmStateCounter = 0;
     private GridDisplayDriver displayDriver;
 
     // GUI Configuration and Status Panes
@@ -44,6 +45,15 @@ public class GuiController {
 
     @FXML
     private Slider excitabilitySlider;
+
+    @FXML
+    private Label excitabilityWarningLabel;
+
+    @FXML
+    private Button resetSpeedSlider;
+
+    @FXML
+    private Button resetFireSlider;
 
     // Simulation Matrix
 
@@ -120,7 +130,13 @@ public class GuiController {
 
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                excitabilityWarningLabel.setVisible(false);
                 Configuration.instance.fireProbability = newValue.doubleValue() / 100.0;
+
+                if (newValue.intValue() <= 0) {
+                    excitabilityWarningLabel.setVisible(true);
+                    excitabilityWarningLabel.setText("Warning: Probability is set to 0 percent!");
+                }
             }
         });
     }
@@ -131,8 +147,8 @@ public class GuiController {
 
     @FXML
     private void startSimulation() {
-        resetCellStatesIndex();
         instructDisplayDriver();
+
         activateComponentsOnStart();
     }
 
@@ -140,20 +156,32 @@ public class GuiController {
         Thread algorithmThread = new Thread(new ExcitableMedium(this));
         algorithmThread.setDaemon(true);
         algorithmThread.start();
+        waitForThread(algorithmThread);
 
         displayDriver = new GridDisplayDriver(gridPane, algorithmStates);
         displayDriver.setIterationLabel(iterationLabel);
+        displayDriver.setStateButtons(previousStateButton, nextStateButton);
         Thread driverThread = new Thread(displayDriver);
         driverThread.setDaemon(true);
         driverThread.start();
     }
 
+    private void waitForThread(Thread algorithmThread) {
+        try {
+            algorithmThread.join();
+        } catch (InterruptedException exception) {
+            exception.printStackTrace();
+        }
+    }
+
     @FXML
     private void stopSimulation() {
-        resetCellStatesIndex();
         displayDriver.stop();
+        resetBoardToQuiescent();
+
         toggleControlButtonActivation();
-        toggleStateButtonActivation();
+        previousStateButton.setDisable(true);
+        nextStateButton.setDisable(true);
     }
 
     @FXML
@@ -164,36 +192,31 @@ public class GuiController {
 
     @FXML
     private void moveToPreviousState() {
-        if (displayDriver.isAtLastState()) {
-            nextStateButton.setDisable(false);
-        }
-
         displayDriver.returnToPreviousState();
         displayDriver.updateCurrentState();
-
-        if (displayDriver.isAtFirstState()) {
-            previousStateButton.setDisable(true);
-        }
     }
 
     @FXML
     private void moveToNextState() {
-        if (displayDriver.isAtFirstState()) {
-            previousStateButton.setDisable(false);
-        }
-
         displayDriver.proceedToNextState();
         displayDriver.updateCurrentState();
+    }
 
-        if (displayDriver.isAtLastState()) {
-            nextStateButton.setDisable(true);
-        }
+    @FXML
+    private void resetExecutionSpeed() {
+        WindowConfiguration.setIterationWaitInterval(WindowConfiguration.DEFAULT_ITERATION_WAIT_INTERVAL);
+        speedSlider.setValue(1000L - WindowConfiguration.DEFAULT_ITERATION_WAIT_INTERVAL);
+    }
+
+    @FXML
+    private void resetExcitabilityProbability() {
+        Configuration.instance.fireProbability = Configuration.instance.defaultFireProbability;
+        excitabilitySlider.setValue(Configuration.instance.defaultFireProbability * 100.0);
     }
 
     private void activateComponentsOnStart() {
         stateRevisionPane.setDisable(false);
         toggleControlButtonActivation();
-        toggleStateButtonActivation();
     }
 
     private void toggleControlButtonActivation() {
@@ -202,13 +225,11 @@ public class GuiController {
         holdButton.setDisable(!holdButton.disabledProperty().get());
     }
 
-    private void toggleStateButtonActivation() {
-        previousStateButton.setDisable(!previousStateButton.disabledProperty().get());
-        nextStateButton.setDisable(!nextStateButton.disabledProperty().get());
-    }
-
-    private void resetCellStatesIndex() {
-        algorithmStateCounter = 0;
+    private void resetBoardToQuiescent() {
+        Iterator<Rectangle> gridIterator = new GridPaneIterator(gridPane);
+        while (gridIterator.hasNext()) {
+            gridIterator.next().setFill(Color.LIGHTGREEN);
+        }
     }
 
     public void setAlgorithmStates(List<IState[][]> algorithmStates) {

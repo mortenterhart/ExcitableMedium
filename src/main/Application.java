@@ -36,11 +36,9 @@ public class Application extends javafx.application.Application {
         primaryStage.setTitle(WindowConfiguration.TITLE);
         Pane rootElement = loader.load();
 
-        primaryStage.setOnCloseRequest(event -> {
-            primaryStage.close();
-        });
+        primaryStage.setOnCloseRequest(event -> primaryStage.close());
 
-        Scene guiScene = new Scene(rootElement, WindowConfiguration.WINDOW_WIDTH, WindowConfiguration.WINDOW_HEIGHT);
+        Scene guiScene = new Scene(rootElement);
         primaryStage.setScene(guiScene);
         primaryStage.show();
     }

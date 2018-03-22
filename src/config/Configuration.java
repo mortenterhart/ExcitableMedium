@@ -7,9 +7,11 @@ public enum Configuration {
     instance;
 
     public final String fxmlPackagePath = "/gui/model/GridVisualization.fxml";
+    public final String paneCSSPackagePath = "/gui/model/paneRoundBorders.css";
 
-    public int gridSize = 21;
-    public double fireProbability = 0.01;
+    public final int gridSize = 21;
+    public double fireProbability = 0.05;
+    public final double defaultFireProbability = 0.05;
     public int numberOfNeighbours = 4;
     public int refractoryDuration = 2;
     public MersenneTwister mersenneTwister = new MersenneTwister();

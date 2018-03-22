@@ -6,6 +6,7 @@ import gui.util.GraduallyIndexConverter;
 import gui.util.GridPaneIterator;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -17,14 +18,17 @@ import java.util.Iterator;
 import java.util.List;
 
 public class GridDisplayDriver implements Runnable {
-    private GridPane gridPane;
+    private final GridPane gridPane;
+    private final List<IState[][]> gridStates;
     private GraduallyIndexConverter indexConverter;
-    private List<IState[][]> gridStates;
+
     private boolean started = true;
     private int stateIndex = 0;
     private boolean hold = false;
 
     private Label iterationLabel;
+    private Button previousStateButton;
+    private Button nextStateButton;
 
     public GridDisplayDriver(GridPane gridPane, List<IState[][]> cellBoardStates) {
         this.gridPane = gridPane;
@@ -53,11 +57,15 @@ public class GridDisplayDriver implements Runnable {
     }
 
     public void returnToPreviousState() {
-        stateIndex--;
+        if (stateIndex >= 0) {
+            stateIndex--;
+        }
     }
 
     public void proceedToNextState() {
-        stateIndex++;
+        if (stateIndex <= gridStates.size() - 1) {
+            stateIndex++;
+        }
     }
 
     public void stop() {
@@ -126,16 +134,28 @@ public class GridDisplayDriver implements Runnable {
              */
             protected Void call() throws Exception {
                 iterationLabel.setText(String.format("%d/%d", stateIndex + 1, gridStates.size()));
+
+                previousStateButton.setDisable(false);
+                nextStateButton.setDisable(false);
+
+                if (isAtFirstState()) {
+                    previousStateButton.setDisable(true);
+                }
+
+                if (isAtLastState()) {
+                    nextStateButton.setDisable(true);
+                }
+
                 return null;
             }
         });
     }
 
-    public boolean isAtFirstState() {
+    private boolean isAtFirstState() {
         return stateIndex <= 0;
     }
 
-    public boolean isAtLastState() {
+    private boolean isAtLastState() {
         return stateIndex >= gridStates.size() - 1;
     }
 
@@ -149,5 +169,10 @@ public class GridDisplayDriver implements Runnable {
 
     public void setIterationLabel(Label iterationLabel) {
         this.iterationLabel = iterationLabel;
+    }
+
+    public void setStateButtons(Button previousStateButton, Button nextStateButton) {
+        this.previousStateButton = previousStateButton;
+        this.nextStateButton = nextStateButton;
     }
 }
