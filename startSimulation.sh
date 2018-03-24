@@ -1,8 +1,9 @@
 #!/bin/bash
 
+program_name="ExcitableMedium";
 main_class_java_path="main.Main";
 main_class_file_path="src/main/Main.java";
-program_name="ExcitableMedium";
+output_folder="build";
 
 if ! type javac > /dev/null 2>&1; then
     printf "error: No Java installation was found! Make sure Java 8 or newer is installed correctly\n" >&2;
@@ -20,12 +21,12 @@ fi
 if [ -d "src" ]; then
     printf "[%s]: Compiling Java sources ...\n" "${program_name}";
 
-    javac -d "build" -classpath "src" "${main_class_file_path}";
+    javac -d "${output_folder}" -classpath "src" "${main_class_file_path}";
     if [ $? -eq 0 ]; then
         printf "[%s]: Compiled bytecode was moved to 'build' folder.\n\n" "${program_name}";
         printf "[%s]: Executing Excitable Medium\n" "${program_name}";
 
-        java -classpath "build" "${main_class_java_path}";
+        java -classpath "${output_folder}" "${main_class_java_path}";
         exit $?;
     else
         printf "[%s]: Failed to compile the Java sources! Exiting ...\n";
