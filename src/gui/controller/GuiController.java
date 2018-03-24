@@ -16,6 +16,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.TextAlignment;
 import main.ExcitableMedium;
 import state.IState;
 
@@ -89,6 +90,7 @@ public class GuiController {
 
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setGridLinesVisible(false);
+        iterationLabel.setTextAlignment(TextAlignment.RIGHT);
     }
 
     private void initializeGUIActivation() {

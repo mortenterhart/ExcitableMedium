@@ -9,7 +9,7 @@ public class ExcitedState implements IState {
         cell.setState(new RefractoryState());
     }
 
-    public StateDescriptor getStateDescriptor(){
+    public StateDescriptor getStateDescriptor() {
         return descriptor;
     }
 

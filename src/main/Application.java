@@ -2,19 +2,12 @@ package main;
 
 import config.Configuration;
 import config.WindowConfiguration;
-import gui.controller.GuiController;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
-import javafx.collections.MapChangeListener;
-import javafx.collections.SetChangeListener;
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 
 public class Application extends javafx.application.Application {
 

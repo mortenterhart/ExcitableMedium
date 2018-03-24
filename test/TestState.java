@@ -26,7 +26,7 @@ public class TestState {
     }
 
     @Test
-    public void testBurningCell(){
+    public void testBurningCell() {
         excitableMedium.run();
         assertThat(cellGrid.getCellBoard()[0][0].getCellState(), instanceOf(QuiescentState.class));
 
