@@ -21,7 +21,7 @@ public class CellGrid {
         grid = new Cell[gridSize][gridSize];
     }
 
-    private CellGrid(Cell[][] grid) {
+    public CellGrid(Cell[][] grid) {
         this.grid = grid;
     }
 

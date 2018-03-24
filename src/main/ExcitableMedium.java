@@ -22,6 +22,11 @@ public class ExcitableMedium implements Runnable {
         cellGridStates = new ArrayList<>();
     }
 
+    public ExcitableMedium(CellGrid board1) {
+        board1 = new CellGrid();
+        cellGridStates = new ArrayList<>();
+    }
+
     /**
      * When an object implementing interface <code>Runnable</code> is used
      * to create a thread, starting the thread causes the object's
