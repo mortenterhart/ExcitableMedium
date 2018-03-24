@@ -23,7 +23,7 @@ public class ExcitableMedium implements Runnable {
     }
 
     public ExcitableMedium(CellGrid board1) {
-        board1 = new CellGrid();
+        board = board1;
         cellGridStates = new ArrayList<>();
     }
 
