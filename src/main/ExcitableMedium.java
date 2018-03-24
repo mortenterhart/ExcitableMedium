@@ -15,16 +15,22 @@ public class ExcitableMedium implements Runnable {
     private CellGrid board;
     private GuiController controller;
     private List<IState[][]> cellGridStates;
+    private boolean initialRandomBoard = false;
 
-    public ExcitableMedium(GuiController controller) {
-        this.controller = controller;
+    public ExcitableMedium(boolean initialRandomBoard) {
         board = new CellGrid();
         cellGridStates = new ArrayList<>();
+        this.initialRandomBoard = initialRandomBoard;
     }
 
-    public ExcitableMedium(CellGrid board1) {
-        board = board1;
-        cellGridStates = new ArrayList<>();
+    public ExcitableMedium(GuiController controller) {
+        this(true);
+        this.controller = controller;
+    }
+
+    public ExcitableMedium(CellGrid board, boolean initialRandomBoard) {
+        this(initialRandomBoard);
+        this.board = board;
     }
 
     /**
@@ -43,7 +49,9 @@ public class ExcitableMedium implements Runnable {
     }
 
     private void simulateDevelopment() {
-        board.randomizeStartConstellation();
+        if (initialRandomBoard) {
+            board.randomizeStartConstellation();
+        }
         encapsulateCellStates();
 
         while (board.containsExcitedOrRefractoryCells()) {

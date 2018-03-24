@@ -10,17 +10,18 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TestState {
-    CellGrid cellGrid;
-    Cell exictedCell;
-    ExcitableMedium excitableMedium;
+    private CellGrid cellGrid;
+    private Cell excitedCell;
+    private ExcitableMedium excitableMedium;
     private Cell[][] grid;
+
     @Before
     public void initialize() {
-        exictedCell = new Cell(new ExcitedState());
+        excitedCell = new Cell(new ExcitedState());
         grid = new Cell[2][2];
-        grid[0][0] = exictedCell;
+        grid[0][0] = excitedCell;
         cellGrid = new CellGrid(grid);
-        excitableMedium = new ExcitableMedium(cellGrid);
+        excitableMedium = new ExcitableMedium(cellGrid, false);
 
     }
 
