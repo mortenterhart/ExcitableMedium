@@ -76,6 +76,7 @@ public class GuiController {
 
     @FXML
     private Button nextStateButton;
+    private String[] args;
 
     @FXML
     private void initialize() {
@@ -154,17 +155,23 @@ public class GuiController {
     }
 
     private void instructDisplayDriver() {
-        Thread algorithmThread = new Thread(new ExcitableMedium(this));
-        algorithmThread.setDaemon(true);
-        algorithmThread.start();
-        waitForThread(algorithmThread);
 
-        displayDriver = new GridDisplayDriver(gridPane, algorithmStates);
-        displayDriver.setIterationLabel(iterationLabel);
-        displayDriver.setStateButtons(previousStateButton, nextStateButton);
-        Thread driverThread = new Thread(displayDriver);
-        driverThread.setDaemon(true);
-        driverThread.start();
+
+        if (!args[0].equals("test")){
+
+        Thread algorithmThread = new Thread(new ExcitableMedium(this));
+            algorithmThread.setDaemon(true);
+            algorithmThread.start();
+            waitForThread(algorithmThread);
+
+            displayDriver = new GridDisplayDriver(gridPane, algorithmStates);
+            displayDriver.setIterationLabel(iterationLabel);
+            displayDriver.setStateButtons(previousStateButton, nextStateButton);
+            Thread driverThread = new Thread(displayDriver);
+            driverThread.setDaemon(true);
+            driverThread.start();
+        }
+
     }
 
     private void waitForThread(Thread algorithmThread) {
@@ -300,5 +307,9 @@ public class GuiController {
 
     public Button getNextStateButton() {
         return nextStateButton;
+    }
+
+    public void setArguments(String[] args) {
+        this.args = args;
     }
 }

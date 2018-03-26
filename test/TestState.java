@@ -29,8 +29,8 @@ public class TestState {
         excitableMedium = new ExcitableMedium(cellGrid, false);
 
         main = new Main();
-        main.main(new String[0]);
-
+        String[] args = {"test"};
+        main.main(args);
 
     }
 
