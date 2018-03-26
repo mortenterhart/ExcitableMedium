@@ -226,7 +226,7 @@
                 <Label layoutX="304.0" layoutY="626.0" text="Refractory"/>
                 <Label layoutX="94.0" layoutY="626.0" text="Quiescent"/>
                 <Label layoutX="202.0" layoutY="626.0" text="Excited"/>
-                <Label layoutX="64.0" layoutY="597.0" text="Color Explanation">
+                <Label layoutX="64.0" layoutY="597.0" text="Color Reference">
                     <font>
                         <Font size="15.0"/>
                     </font>
