@@ -16,6 +16,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.TextAlignment;
 import main.ExcitableMedium;
 import state.IState;
 
@@ -24,7 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public class GuiController {
-    private int gridSize = Configuration.instance.gridSize;
     private GraduallyIndexConverter indexConverter;
 
     private List<IState[][]> algorithmStates;
@@ -80,7 +80,7 @@ public class GuiController {
     @FXML
     private void initialize() {
         algorithmStates = new ArrayList<>();
-        indexConverter = new GraduallyIndexConverter(gridSize);
+        indexConverter = new GraduallyIndexConverter(Configuration.instance.gridSize);
 
         initializeGUIActivation();
         buildRoundedCornersAroundStatePane();
@@ -89,6 +89,7 @@ public class GuiController {
 
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setGridLinesVisible(false);
+        iterationLabel.setTextAlignment(TextAlignment.RIGHT);
     }
 
     private void initializeGUIActivation() {
@@ -185,7 +186,7 @@ public class GuiController {
     }
 
     @FXML
-    private void holdSimulation() {
+    private synchronized void holdSimulation() {
         displayDriver.toggleHold();
         stopButton.setDisable(!stopButton.disabledProperty().get());
     }

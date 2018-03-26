@@ -74,11 +74,26 @@ public class GridDisplayDriver implements Runnable {
 
     public void toggleHold() {
         hold = !hold;
+        if (!hold) {
+            resume();
+        }
     }
 
     private void holdIfTriggered() {
-        while (hold) {
-            waitInterval(WindowConfiguration.ITERATION_WAIT_INTERVAL);
+        if (hold) {
+            waitForResume();
+        }
+    }
+
+    private synchronized void resume() {
+        this.notify();
+    }
+
+    private synchronized void waitForResume() {
+        try {
+            this.wait();
+        } catch (InterruptedException exception) {
+            exception.printStackTrace();
         }
     }
 

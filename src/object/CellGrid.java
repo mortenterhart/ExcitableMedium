@@ -125,7 +125,7 @@ public class CellGrid {
                 }
             }
         }
-        
+
         return false;
     }
 
@@ -142,7 +142,7 @@ public class CellGrid {
         return false;
     }
 
-    public Cell[][] getCellBoard(){
+    public Cell[][] getCellBoard() {
         return grid;
     }
 }

@@ -32,6 +32,7 @@ public class TestState {
         assertNotNull(grid);
         assertNotNull(excitableMedium);
         assertNotNull(excitedCell);
+
     }
 
 }

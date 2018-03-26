@@ -1,8 +1,9 @@
 @echo off
 
+SET "program_name=ExcitableMedium"
 SET "main_class_java_path=main.Main"
 SET "main_class_file_path=src\main\Main.java"
-SET "program_name=ExcitableMedium"
+SET "output_folder=build"
 SET "script_directory=%~dp0"
 
 WHERE /Q javac
@@ -23,14 +24,14 @@ IF NOT EXIST "src" (
 )
 
 ECHO [%program_name%]: Compiling Java sources ...
-javac -d "build" -classpath "src" "%main_class_file_path%"
+javac -d "%output_folder%" -classpath "src" "%main_class_file_path%"
 
 IF ERRORLEVEL 0 IF NOT ERRORLEVEL 1 (
     ECHO [%program_name%]: Compiled bytecode was moved to 'build' folder.
     ECHO.
 
     ECHO [%program_name%]: Executing Excitable Medium
-    java -classpath "build" "%main_class_java_path%"
+    java -classpath "%output_folder%" "%main_class_java_path%"
 
     PAUSE
     EXIT %ERRORLEVEL%
