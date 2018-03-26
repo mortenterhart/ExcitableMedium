@@ -35,4 +35,8 @@ public class Application extends javafx.application.Application {
         primaryStage.setScene(guiScene);
         primaryStage.show();
     }
+
+    public FXMLLoader getLoader() {
+        return loader;
+    }
 }

@@ -236,4 +236,69 @@ public class GuiController {
     public void setAlgorithmStates(List<IState[][]> algorithmStates) {
         this.algorithmStates = algorithmStates;
     }
+
+
+    public GraduallyIndexConverter getIndexConverter() {
+        return indexConverter;
+    }
+
+    public List<IState[][]> getAlgorithmStates() {
+        return algorithmStates;
+    }
+
+    public GridDisplayDriver getDisplayDriver() {
+        return displayDriver;
+    }
+
+    public Pane getStateRevisionPane() {
+        return stateRevisionPane;
+    }
+
+    public Label getIterationLabel() {
+        return iterationLabel;
+    }
+
+    public Slider getSpeedSlider() {
+        return speedSlider;
+    }
+
+    public Slider getExcitabilitySlider() {
+        return excitabilitySlider;
+    }
+
+    public Label getExcitabilityWarningLabel() {
+        return excitabilityWarningLabel;
+    }
+
+    public Button getResetSpeedSlider() {
+        return resetSpeedSlider;
+    }
+
+    public Button getResetFireSlider() {
+        return resetFireSlider;
+    }
+
+    public GridPane getGridPane() {
+        return gridPane;
+    }
+
+    public Button getStartButton() {
+        return startButton;
+    }
+
+    public Button getStopButton() {
+        return stopButton;
+    }
+
+    public Button getHoldButton() {
+        return holdButton;
+    }
+
+    public Button getPreviousStateButton() {
+        return previousStateButton;
+    }
+
+    public Button getNextStateButton() {
+        return nextStateButton;
+    }
 }
