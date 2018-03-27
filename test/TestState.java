@@ -3,6 +3,7 @@ import main.ExcitableMedium;
 import main.Main;
 import object.Cell;
 import object.CellGrid;
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Test;
 import state.ExcitedState;
@@ -28,9 +29,6 @@ public class TestState {
         cellGrid = new CellGrid(grid);
         excitableMedium = new ExcitableMedium(cellGrid, false);
 
-        main = new Main();
-        String[] args = {"test"};
-        main.main(args);
 
     }
 
@@ -39,32 +37,13 @@ public class TestState {
         assertNotNull(grid);
         assertNotNull(excitableMedium);
         assertNotNull(excitedCell);
-        assertNotNull(main);
-        assertNotNull(main.getApplication());
+    }
 
-
-        assertNotNull(main.getApplication().getLoader());
-
-        controller = (GuiController) main.getApplication().getLoader().getController();
-        assertNotNull(controller);
-
-
-        assertNotNull(controller);
-        assertNotNull(controller.getAlgorithmStates());
-        assertNotNull(controller.getDisplayDriver());
-        assertNotNull(controller.getExcitabilitySlider());
-        assertNotNull(controller.getExcitabilityWarningLabel());
-        assertNotNull(controller.getGridPane());
-        assertNotNull(controller.getHoldButton());
-        assertNotNull(controller.getIndexConverter());
-        assertNotNull(controller.getIterationLabel());
-        assertNotNull(controller.getNextStateButton());
-        assertNotNull(controller.getPreviousStateButton());
-        assertNotNull(controller.getResetFireSlider());
-        assertNotNull(controller.getResetSpeedSlider());
-        assertNotNull(controller.getSpeedSlider());
-
-
+    @Test
+    public void testStuff(){
+        cellGrid.markCellStateModifications();
+        QuiescentState quiescentState = new QuiescentState();
+        assertThat(quiescentState, instanceOf(grid[0][0].getCellState().getClass()));
     }
 
 
