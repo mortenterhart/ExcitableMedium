@@ -155,11 +155,8 @@ public class GuiController {
     }
 
     private void instructDisplayDriver() {
-
-
-        if (!args[0].equals("test")){
-
-        Thread algorithmThread = new Thread(new ExcitableMedium(this));
+        if (!args[0].equals("test")) {
+            Thread algorithmThread = new Thread(new ExcitableMedium(this));
             algorithmThread.setDaemon(true);
             algorithmThread.start();
             waitForThread(algorithmThread);

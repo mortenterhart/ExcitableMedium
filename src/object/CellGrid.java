@@ -5,43 +5,48 @@ import random.MersenneTwister;
 import state.ExcitedState;
 import state.IState;
 import state.QuiescentState;
+import state.StateDescriptor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class CellGrid {
-    private Cell[][] grid;
+    private Cell[][] cellGrid;
 
     private int gridSize = Configuration.instance.gridSize;
     private double fireProbability = Configuration.instance.fireProbability;
     private MersenneTwister random = Configuration.instance.mersenneTwister;
 
     public CellGrid() {
-        grid = new Cell[gridSize][gridSize];
+        cellGrid = new Cell[gridSize][gridSize];
     }
 
-    public CellGrid(Cell[][] grid) {
-        this.grid = grid;
+    public void fillWith(StateDescriptor state) {
+        for (int y = 0; y < gridSize; y++) {
+            for (int x = 0; x < gridSize; x++) {
+                cellGrid[x][y] = new Cell(state.getInstance());
+            }
+        }
     }
 
     public void randomizeStartConstellation() {
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
+        for (int y = 0; y < gridSize; y++) {
+            for (int x = 0; x < gridSize; x++) {
                 if (random.nextBoolean(fireProbability)) {
-                    grid[i][j] = new Cell(new ExcitedState());
+                    cellGrid[x][y] = new Cell(new ExcitedState());
                 } else {
-                    grid[i][j] = new Cell(new QuiescentState());
+                    cellGrid[x][y] = new Cell(new QuiescentState());
                 }
             }
         }
     }
 
     public void markCellStateModifications() {
-        for (int x = 0; x < gridSize; x++) {
-            for (int y = 0; y < gridSize; y++) {
-                Cell currentCell = grid[x][y];
-                List<IState> neighbourStates = collectNeighbourStates(x, y);
+        for (int y = 0; y < gridSize; y++) {
+            for (int x = 0; x < gridSize; x++) {
+                Cell currentCell = cellGrid[x][y];
+                List<IState> neighbourStates = collectNeighbourStates(y, x);
 
                 switch (currentCell.getCellState().getStateDescriptor()) {
                     case quiescent:
@@ -78,19 +83,19 @@ public class CellGrid {
     private List<IState> collectNeighbourStates(int x, int y) {
         List<IState> states = new ArrayList<>(4);
         if (coordinatesInsideGrid(x - 1, y)) {
-            states.add(grid[x - 1][y].getCellState());
+            states.add(cellGrid[x - 1][y].getCellState());
         }
 
         if (coordinatesInsideGrid(x + 1, y)) {
-            states.add(grid[x + 1][y].getCellState());
+            states.add(cellGrid[x + 1][y].getCellState());
         }
 
         if (coordinatesInsideGrid(x, y - 1)) {
-            states.add(grid[x][y - 1].getCellState());
+            states.add(cellGrid[x][y - 1].getCellState());
         }
 
         if (coordinatesInsideGrid(x, y + 1)) {
-            states.add(grid[x][y + 1].getCellState());
+            states.add(cellGrid[x][y + 1].getCellState());
         }
 
         return states;
@@ -100,8 +105,20 @@ public class CellGrid {
         return x >= 0 && x < gridSize && y >= 0 && y < gridSize;
     }
 
+    public Cell get(int x, int y) {
+        checkBoundaries(x, y);
+        return cellGrid[x][y];
+    }
+
+    private void checkBoundaries(int x, int y) {
+        if (x < 0 || x >= gridSize || y < 0 || y >= gridSize) {
+            throw new IndexOutOfBoundsException("coordinates [" + x + ", " + y + "] do not comply to cellGrid " +
+                    "boundaries of size " + gridSize);
+        }
+    }
+
     public void dispatchCellMutations() {
-        Arrays.stream(grid).forEach(cells -> Arrays.stream(cells).forEach(
+        Arrays.stream(cellGrid).forEach(cells -> Arrays.stream(cells).forEach(
                 cell -> {
                     if (cell.willStateBeMutated()) {
                         cell.update();
@@ -111,15 +128,15 @@ public class CellGrid {
     }
 
     public void resetToQuiescent() {
-        Arrays.stream(grid).forEach(cells -> Arrays.stream(cells).forEach(
+        Arrays.stream(cellGrid).forEach(cells -> Arrays.stream(cells).forEach(
                 cell -> cell.setState(new QuiescentState())
         ));
     }
 
     public boolean containsExcitedCells() {
-        for (int x = 0; x < gridSize; x++) {
-            for (int y = 0; y < gridSize; y++) {
-                Cell currentCell = grid[x][y];
+        for (int y = 0; y < gridSize; y++) {
+            for (int x = 0; x < gridSize; x++) {
+                Cell currentCell = cellGrid[x][y];
                 if (currentCell.isExcited()) {
                     return true;
                 }
@@ -130,9 +147,9 @@ public class CellGrid {
     }
 
     public boolean containsExcitedOrRefractoryCells() {
-        for (int x = 0; x < gridSize; x++) {
-            for (int y = 0; y < gridSize; y++) {
-                Cell currentCell = grid[x][y];
+        for (int y = 0; y < gridSize; y++) {
+            for (int x = 0; x < gridSize; x++) {
+                Cell currentCell = cellGrid[x][y];
                 if (currentCell.isExcited() || currentCell.isRefractory()) {
                     return true;
                 }
@@ -143,6 +160,6 @@ public class CellGrid {
     }
 
     public Cell[][] getCellBoard() {
-        return grid;
+        return cellGrid;
     }
 }
