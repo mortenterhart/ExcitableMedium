@@ -6,7 +6,7 @@ import state.ExcitedState;
 import state.RefractoryState;
 import state.StateDescriptor;
 
-import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class IStateTest {
