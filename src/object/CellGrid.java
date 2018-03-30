@@ -46,7 +46,7 @@ public class CellGrid {
         for (int y = 0; y < gridSize; y++) {
             for (int x = 0; x < gridSize; x++) {
                 Cell currentCell = cellGrid[x][y];
-                List<IState> neighbourStates = collectNeighbourStates(y, x);
+                List<IState> neighbourStates = collectNeighbourStates(x, y);
 
                 switch (currentCell.getCellState().getStateDescriptor()) {
                     case quiescent:
